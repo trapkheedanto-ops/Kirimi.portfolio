@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Budaya Nusantara — Jelajahi kekayaan budaya Indonesia dari masa prasejarah hingga era modern melalui garis waktu interaktif.">
+    <meta name="theme-color" content="#1a0e08">
+    <title>Budaya Nusantara — Jejak Budaya Indonesia Sepanjang Masa</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #150d07;
+            --bg-card: #21150c;
+            --bg-card-hover: #2b1c10;
+            --gold: #e0a82e;
+            --gold-bright: #f6c453;
+            --soga: #8a5a2b;
+            --batik-indigo: #2d4a7a;
+            --text-primary: #f5ead6;
+            --text-secondary: #d8c3a0;
+            --text-muted: #9c8768;
+            --border-subtle: rgba(224, 168, 46, 0.18);
+            --border-glow: rgba(224, 168, 46, 0.5);
+            --shadow-card: 0 18px 50px rgba(0, 0, 0, 0.5);
+            --radius-lg: 24px;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            background-image:
+                radial-gradient(ellipse at 15% 10%, rgba(224, 168, 46, 0.07) 0%, transparent 60%),
+                radial-gradient(ellipse at 85% 55%, rgba(45, 74, 122, 0.08) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, transparent 0 40px, rgba(224,168,46,0.012) 40px 42px);
+            background-attachment: fixed;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+
+        /* ── Navbar ─────────────────────────── */
+        .navbar {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px clamp(16px, 5vw, 60px);
+            background: rgba(21, 13, 7, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .brand { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.3rem; color: var(--gold-bright); letter-spacing: 0.5px; }
+        .brand small { display: block; font-family: 'Inter'; font-weight: 400; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 22px; font-size: 0.88rem; color: var(--text-secondary); }
+        .nav-links a:hover { color: var(--gold-bright); }
+        @media (max-width: 720px) { .nav-links { display: none; } }
+
+        /* ── Hero ───────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: clamp(60px, 12vh, 130px) 20px clamp(50px, 8vh, 90px);
+            max-width: 900px; margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block; padding: 8px 20px; border-radius: 999px;
+            border: 1px solid var(--border-glow); color: var(--gold-bright);
+            font-size: 0.82rem; letter-spacing: 1px; margin-bottom: 26px;
+            background: rgba(224, 168, 46, 0.06);
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.1rem, 6vw, 3.6rem);
+            font-weight: 800; line-height: 1.15; margin-bottom: 22px;
+            background: linear-gradient(120deg, var(--gold-bright), #fff3d6, var(--gold));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .hero p { color: var(--text-secondary); font-size: clamp(1rem, 2.4vw, 1.15rem); max-width: 680px; margin: 0 auto 34px; }
+        .hero-stats { display: flex; justify-content: center; gap: clamp(20px, 6vw, 60px); flex-wrap: wrap; }
+        .stat b { display: block; font-size: 1.7rem; color: var(--gold-bright); font-weight: 800; }
+        .stat span { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+        /* ── Controls ───────────────────────── */
+        .controls { max-width: 1150px; margin: 0 auto; padding: 10px 20px 30px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; justify-content: center; }
+        .search-box {
+            flex: 1; min-width: 260px; max-width: 460px;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 14px; padding: 13px 18px; color: var(--text-primary); font-size: 0.95rem;
+            transition: border var(--transition-smooth);
+        }
+        .search-box:focus { border-color: var(--border-glow); }
+        .filter-chip {
+            padding: 9px 18px; border-radius: 999px; font-size: 0.83rem;
+            background: var(--bg-card); color: var(--text-secondary);
+            border: 1px solid var(--border-subtle); transition: all var(--transition-smooth);
+        }
+        .filter-chip.active, .filter-chip:hover { background: var(--gold); color: #241505; border-color: var(--gold); font-weight: 600; }
+
+        /* ── Timeline ───────────────────────── */
+        .timeline-wrap { max-width: 1150px; margin: 0 auto; padding: 10px 20px 80px; position: relative; }
+        .era-heading {
+            font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3.5vw, 2rem);
+            color: var(--gold-bright); margin: 56px 0 8px; display: flex; align-items: center; gap: 16px;
+        }
+        .era-heading::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-glow), transparent); }
+        .era-years { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 26px; letter-spacing: 1px; }
+
+        .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 26px;
+            box-shadow: var(--shadow-card);
+            transition: transform var(--transition-smooth), border-color var(--transition-smooth), background var(--transition-smooth);
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--border-glow); background: var(--bg-card-hover); }
+        .card-icon { font-size: 2rem; }
+        .card-year {
+            display: inline-block; align-self: flex-start;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+            color: var(--gold-bright); background: rgba(224, 168, 46, 0.1);
+            padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border-subtle);
+        }
+        .card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--text-primary); }
+        .card .region { font-size: 0.8rem; color: var(--soga); filter: brightness(1.6); letter-spacing: 0.5px; }
+        .card p { font-size: 0.9rem; color: var(--text-secondary); flex: 1; }
+        .card .tag {
+            align-self: flex-start; font-size: 0.72rem; padding: 3px 12px; border-radius: 999px;
+            background: rgba(45, 74, 122, 0.25); color: #a9c4ec; border: 1px solid rgba(45, 74, 122, 0.5);
+        }
+        .no-results { text-align: center; color: var(--text-muted); padding: 60px 0; display: none; }
+
+        /* ── Footer ─────────────────────────── */
+        footer {
+            border-top: 1px solid var(--border-subtle); padding: 40px 20px; text-align: center;
+            color: var(--text-muted); font-size: 0.85rem;
+        }
+        footer b { color: var(--gold); }
+
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a class="brand" href="index.html">Fortuna Labs<small>Kearifan &amp; Teknologi</small></a>
+        <nav class="nav-links">
+            <a href="#beranda">Beranda</a>
+            <a href="#garis-waktu">Garis Waktu</a>
+            <a href="index.html">Studio Kami</a>
+        </nav>
+    </header>
+
+    <section class="hero reveal" id="beranda">
+        <span class="hero-badge">🏛️ Merawat Ingatan Bangsa</span>
+        <h1>Jejak Budaya Nusantara<br>Sepanjang Masa</h1>
+        <p>Dari lukisan gua Leang Tedongnge berusia 51.000 tahun — salah satu seni tertua di dunia — hingga digitalisasi budaya hari ini. Telusuri peradaban Indonesia dalam satu garis waktu interaktif.</p>
+        <div class="hero-stats">
+            <div class="stat"><b>51.000+</b><span>Tahun Jejak Seni</span></div>
+            <div class="stat"><b>1.340+</b><span>Suku Bangsa</span></div>
+            <div class="stat"><b>700+</b><span>Bahasa Daerah</span></div>
+            <div class="stat"><b>10+</b><span>Warisan UNESCO</span></div>
+        </div>
+    </section>
+
+    <div class="controls reveal" id="garis-waktu">
+        <input class="search-box" id="searchInput" type="search" placeholder="🔍 Cari budaya, situs, atau tradisi… (mis. batik, candi, Toraja)">
+        <button class="filter-chip active" data-cat="all">Semua</button>
+        <button class="filter-chip" data-cat="seni">Seni</button>
+        <button class="filter-chip" data-cat="adat">Adat &amp; Ritual</button>
+        <button class="filter-chip" data-cat="arsitektur">Arsitektur</button>
+        <button class="filter-chip" data-cat="kuliner">Kuliner</button>
+        <button class="filter-chip" data-cat="sastra">Sastra &amp; Aksara</button>
+        <button class="filter-chip" data-cat="musik">Musik &amp; Tari</button>
+    </div>
+
+    <main class="timeline-wrap" id="timelineContainer">
+        <!-- Cards injected by JS -->
+        <div class="no-results" id="noResults">Tidak ada hasil. Coba kata kunci lain 🙏</div>
+    </main>
+
+    <footer>
+        <p><b>Budaya Nusantara</b> — sebuah proyek budaya oleh Fortuna Labs · Dibuat dengan hormat untuk seluruh warisan leluhur Indonesia.</p>
+        <p style="margin-top:8px;">Sumber data dapat diperluas: arkeologi, catatan sejarah lisan, dan penetapan UNESCO. 🇮🇩</p>
+    </footer>
+
+    <script>
+        // ════════════════════════════════════════════════════════
+        // DATA BUDAYA — setiap entri punya era, tahun, wilayah,
+        // kategori, deskripsi. Mudah diperluas oleh tim QC.
+        // ════════════════════════════════════════════════════════
+        const ERAS = [
+            { id: "prasejarah", name: "Masa Prasejarah", years: "± 51.000 SM – 500 SM" },
+            { id: "kerajaan",   name: "Era Kerajaan & Hindu-Buddha", years: "Abad ke-1 – ke-15 M" },
+            { id: "islam",      name: "Era Kesultanan & Penyebaran Islam", years: "Abad ke-13 – ke-18 M" },
+            { id: "kolonial",   name: "Masa Kolonial & Pergerakan", years: "1500 – 1945" },
+            { id: "merdeka",    name: "Era Kemerdekaan & Modern", years: "1945 – kini" }
+        ];
+
+        const CULTURES = [
+            // ── Prasejarah ──
+            { era:"prasejarah", year:"± 51.000 SM", icon:"🎨", title:"Lukisan Gua Leang Tedongnge", region:"Sulawesi Selatan", cat:"seni",
+              desc:"Lukisan babi rusa di gua Maros-Pangkep adalah seni figuratif tertua yang diketahui di dunia, mendahului seni gua Eropa ribuan tahun." },
+            { era:"prasejarah", year:"± 40.000 SM", icon:"🖐️", title:"Cap Tangan Sangkulirang", region:"Kalimantan Timur", cat:"seni",
+              desc:"Ratusan cap tangan dan figur hewan di dinding karst Sangkulirang-Mangkalati, salah satu galeri prasejarah terbesar Asia Tenggara." },
+            { era:"prasejarah", year:"± 2.500 SM", icon:"🗿", title:"Megalit Gunung Padang", region:"Jawa Barat", cat:"arsitektur",
+              desc:"Situs teras berundak megalitik yang dipercaya sebagian peneliti berusia lebih tua dari Stonehenge — masih menjadi kajian menarik arkeologi Indonesia." },
+            { era:"prasejarah", year:"± 500 SM", icon:"🥁", title:"Neker Perunggu Bali & Sangean", region:"Bali, Sulawesi, Sumatera", cat:"seni",
+              desc:"neker perunggu budaya Dong Son yang dilebur dan dihias lokal — simbol kosmologis kemakmuran yang masih digunakan dalam ritual hingga hari ini." },
+            { era:"prasejarah", year:"± 300 SM", icon:"🌾", title:"Tradisi Tanam Padi Sawah", region:"Nusantara", cat:"kuliner",
+              desc:"Sistem pertanian basah purba yang melahirkan konsep Tri Hita Karana, Subak Bali, dan fondasi kuliner nasi sebagai pusat kehidupan." },
+
+            // ── Kerajaan & Hindu-Buddha ──
+            { era:"kerajaan", year:"Abad ke-7 M", icon:"📜", title:"Aksara Pallawa & Prasasti Kutai", region:"Kalimantan Timur", cat:"sastra",
+              desc:"Prasasti Yupa Kutai (abad ke-4) dan prasasti-prasasti Sriwijaya menandai masuknya Indonesia ke dalam catatan sejarah tertulis." },
+            { era:"kerajaan", year:"825 M", icon:"🛕", title:"Candi Borobudur", region:"Magelang, Jawa Tengah", cat:"arsitektur",
+              desc:"Monumen Buddha terbesar di dunia, mahakarya abad ke-9 dengan 2.672 panel relief dan 504 arca — Warisan Dunia UNESCO sejak 1991." },
+            { era:"kerajaan", year:"± 850 M", icon:"🛕", title:"Candi Prambanan", region:"Yogyakarta", cat:"arsitektur",
+              desc:"Kompleks Hindu megah karya Dinasti Sanjaya, memahat kisah Ramayana dalam batu; reliefnya masih dipentaskan sebagai Sendratari Ramayana hingga kini." },
+            { era:"kerajaan", year:"Abad ke-9–15 M", icon:"✍️", title:"Sastra Kawi & Kakawin", region:"Jawa & Bali", cat:"sastra",
+              desc:"Tradisi puisi berbahasa Jawa Kuno bertolak dari meter India, seperti Kakawin Ramayana dan Nagarakretagama — jendela kehidupan Nusantara kuno." },
+            { era:"kerajaan", year:"± 1200 M", icon:"⚔️", title:"Si Raja Batak & Dalihan Na Tolu", region:"Sumatera Utara", cat:"adat",
+              desc:"Silsilah marga Batak bermula dari Si Raja Batak; sistem kekerabatan Dalihan Na Tolu dan hukum adatnya bertahan hingga hari ini." },
+            { era:"kerajaan", year:"Abad ke-13 M", icon:"👑", title:"Majapahit & Sumpah Palapa", region:"Jawa Timur", cat:"sastra",
+              desc:"Kekaisaran maritim yang menyatukan sebagian besar Nusantara; kitab Sutasoma memperkenalkan 'Bhinneka Tunggal Ika' — semboyan negara hari ini." },
+
+            // ── Kesultanan ──
+            { era:"islam", year:"Abad ke-13 M", icon:"🕌", title:"Kesultanan Samudera Pasai", region:"Aceh", cat:"adat",
+              desc:"Kesultanan Islam pertama di Nusantara, pusat perdagangan rempah internasional dan titik awal islamisasi lewat jalur sutra maritim." },
+            { era:"islam", year:"1478 M", icon:"🕌", title:"Kesultanan Demak & Menara Kudus", region:"Jawa Tengah", cat:"arsitektur",
+              desc:"Akulturasi unik: menara masjid berbentuk candi bercorak Hindu-Jawa — bukti damai bagaimana budaya baru merangkul yang lama." },
+            { era:"islam", year:"Abad ke-15–16 M", icon:"🧵", title:"Batik Pesisir & Keraton", region:"Pantai utara Jawa", cat:"seni",
+              desc:"Perkembangan batik motif lar, semen, dan parang yang dipegang erat keraton; filosofi tiap motif menjadi bahasa visual pemakainya." },
+            { era:"islam", year:"Abad ke-16 M", icon:"🏝️", title:"Kesultanan Ternate & Tidore", region:"Maluku", cat:"adat",
+              desc:"Penguasa 'Kepulauan Rempah' dunia — politik rempah-rempah yang pada akhirnya memanggil armada Eropa ke Nusantara." },
+            { era:"islam", year:"± 1600-an", icon:"🪈", title:"Sejarah Sasando & Tradisi Rote", region:"Nusa Tenggara Timur", cat:"musik",
+              desc:"Kecapi berdawai ganda khas Pulau Rote, konon berusia ratusan tahun, dimainkan dalam upacara adat dan penjagaan cerita leluhur." },
+
+            // ── Kolonial & Pergerakan ──
+            { era:"kolonial", year:"1600–1942", icon:"🚢", title:"Jalur Rempah & Perjumpaan Budaya", region:"Nusantara", cat:"kuliner",
+              desc:"Percampuran kuliner Eurasia melahirkan rendang, semur, spekkoek, dan biji-bijian kaya rasa — gastronomi sebagai arsip sejarah kolonial." },
+            { era:"kolonial", year:"1815", icon:"🏯", title:"Sejarahnya Candi & Pemugaran", region:"Jawa", cat:"arsitektur",
+              desc:"Penemuan kembali monumen-monumen besar oleh Raffles & Van Erp, lalu pemugaran Van Erp: awal pelestarian cagar budaya modern." },
+            { era:"kolonial", year:"1860-an", icon:"🖋️", title:"R.A. Kartini & Surat-suratnya", region:"Jepara, Jawa Tengah", cat:"sastra",
+              desc:"Pemikiran emansipasi yang lahir dari tradisi sastra surat — mengubah cara bangsa memandang pendidikan dan peran perempuan." },
+            { era:"kolonial", year:"1928", icon:"🎼", title:"Sumpah Pemuda & Lagu Indonesia Raya", region:"Batavia (Jakarta)", cat:"musik",
+              desc:"W.R. Supratman memperdengarkan 'Indonesia Raya' untuk pertama kali — ikrar bahasa, tanah, dan bangsa satu." },
+            { era:"kolonial", year:"1930-an", title:"Pujangga Baru", icon:"📖", region:"Sumatera", cat:"sastra",
+              desc:"Gerakan sastra Pujangga Baru (1933) merumuskan identitas nasional lewat novel, esai, dan majalah sebelum proklamasi." },
+
+            // ── Merdeka & Modern ──
+            { era:"merdeka", year:"1945", icon:"🇮🇩", title:"Proklamasi & Lahirnya Bangsa", region:"Jakarta", cat:"adat",
+              desc:"Segala keragaman budaya resmi menjadi satu mosaik nasional; adat istiadat diakui sebagai fondasi persatuan dalam UUD." },
+            { era:"merdeka", year:"1950–60an", icon:"🩰", title:"Gamelan di Panggung Dunia", region:"Jawa & Bali", cat:"musik",
+              desc:"Ethnomusikologi berkembang di konservatori; gamelan berkeliling dunia lewat misi budaya dan mengajar di universitas luar negeri." },
+            { era:"merdeka", year:"1970-an", icon:"🎭", title:"Reog Ponorogo & Pentas Rakyat", region:"Jawa Timur", cat:"musik",
+              desc:"Kesenian rakyat masuk panggung nasional; Singo Barongan jadi ikon keberanian — belakangan diajukan sebagai Warisan Budaya Tak Benda UNESCO." },
+            { era:"merdeka", year:"2009", icon:"🧵", title:"Batik Diakui UNESCO", region:"Nusantara", cat:"seni",
+              desc:"2 Oktober ditetapkan Hari Batik Nasional — pengakuan dunia atas teknik wax-resist dyeing dan filosofi motifnya." },
+            { era:"merdeka", year:"2010–2015", icon:"🍛", title:"Rendang, Angklung & Wayang Mendunia", region:"Nusantara", cat:"kuliner",
+              desc:"Rendang dinobatkan makanan terenak dunia (CNN), angklung & wayang kulit (2003/2008) tercatat dalam daftar UNESCO." },
+            { era:"merdeka", year:"2019", icon:"🥋", title:"Pencak Silat Warisan Dunia", region:"Nusantara", cat:"adat",
+              desc:"Seni bela diri nusantara resmi masuk Daftar Warisan Budaya Takbenda UNESCO — tubuh sebagai medium penyimpanan filosofi." },
+            { era:"merdeka", year:"2020-an", icon:"💻", title:"Digitalisasi Budaya Nusantara", region:"Seluruh Indonesia", cat:"seni",
+              desc:"Arsip digital, museum virtual, game bertema mitologi, dan platform seperti halaman ini — teknologi merawat ingatan kolektif bangsa." }
+        ];
+
+
+
+        // ════════════════════════════════════════════════════════
+        // RENDER TIMELINE
+        // ════════════════════════════════════════════════════════
+        const container = document.getElementById('timelineContainer');
+        const noResults = document.getElementById('noResults');
+        let activeCat = 'all';
+        let query = '';
+
+        function matches(c) {
+            const okCat = activeCat === 'all' || c.cat === activeCat;
+            const q = query.trim().toLowerCase();
+            const okQ = !q || (c.title + ' ' + c.region + ' ' + c.desc + ' ' + c.year).toLowerCase().includes(q);
+            return okCat && okQ;
+        }
+
+        function render() {
+            container.querySelectorAll('.era-block').forEach(el => el.remove());
+            let anyVisible = false;
+            ERAS.forEach(era => {
+                const items = CULTURES.filter(c => c.era === era.id && matches(c));
+                if (!items.length) return;
+                anyVisible = true;
+                const block = document.createElement('div');
+                block.className = 'era-block';
+                block.innerHTML = `
+                    <h2 class="era-heading reveal">${era.name}</h2>
+                    <div class="era-years">${era.years}</div>
+                    <div class="cards"></div>`;
+                const cardsEl = block.querySelector('.cards');
+                items.forEach(c => {
+                    const card = document.createElement('article');
+                    card.className = 'card reveal';
+                    card.innerHTML = `
+                        <div class="card-icon">${c.icon}</div>
+                        <span class="card-year">${c.year}</span>
+                        <h3>${c.title}</h3>
+                        <div class="region">📍 ${c.region}</div>
+                        <p>${c.desc}</p>
+                        <span class="tag">${catLabel(c.cat)}</span>`;
+                    cardsEl.appendChild(card);
+                });
+                container.insertBefore(block, noResults);
+            });
+            noResults.style.display = anyVisible ? 'none' : 'block';
+            observeReveals();
+        }
+
+        function catLabel(cat) {
+            return { seni:'Seni', adat:'Adat & Ritual', arsitektur:'Arsitektur', kuliner:'Kuliner', sastra:'Sastra & Aksara', musik:'Musik & Tari' }[cat] || cat;
+        }
+
+        document.getElementById('searchInput').addEventListener('input', e => { query = e.target.value; render(); });
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                activeCat = chip.dataset.cat;
+                render();
+            });
+        });
+
+        // Reveal-on-scroll animation
+        let observer;
+        function observeReveals() {
+            if (!('IntersectionObserver' in window)) {
+                document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+                return;
+            }
+            observer = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+            }, { threshold: 0.08 });
+            document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+        }
+
+        render();
+    </script>
+</body>
+</html>
