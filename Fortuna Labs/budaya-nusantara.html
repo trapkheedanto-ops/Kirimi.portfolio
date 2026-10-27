@@ -144,6 +144,27 @@
 
         .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .reveal.visible { opacity: 1; transform: none; }
+
+        /* ── Jelajah Dunia (mode "Di Mana Kamu") ── */
+        .world-heading { margin-top: 90px; }
+        .place-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+        .place-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow-card);
+            display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden;
+            transition: transform var(--transition-smooth), border-color var(--transition-smooth), background var(--transition-smooth);
+        }
+        .place-card:hover { transform: translateY(-5px); border-color: var(--border-glow); background: var(--bg-card-hover); }
+        .place-card.is-you { border-color: var(--gold); box-shadow: 0 0 34px rgba(224, 168, 46, 0.22); }
+        .place-coords { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.5px; }
+        .place-badge {
+            align-self: flex-start; font-size: 0.7rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+            color: #241505; background: var(--gold-bright); padding: 4px 12px; border-radius: 999px;
+        }
+        .place-fallback { display: none; color: var(--text-muted); font-size: 0.85rem; padding: 8px 2px 0; }
+        .locate-btn { margin: 0 auto 6px; display: block; }
+        .locate-btn.busy { opacity: 0.6; pointer-events: none; }
+        @media (prefers-reduced-motion: reduce) { .reveal { transition: none; opacity: 1; transform: none; } }
     </style>
 </head>
 <body>
@@ -179,6 +200,9 @@
         <button class="filter-chip" data-cat="sastra">Sastra &amp; Aksara</button>
         <button class="filter-chip" data-cat="musik">Musik &amp; Tari</button>
     </div>
+
+    <button class="filter-chip locate-btn reveal" id="locateBtn" style="margin-bottom:6px;">📡 Coba mode “Di Mana Kamu”</button>
+    <p class="place-fallback reveal" id="locateNote" style="text-align:center; max-width:640px; margin:0 auto 10px;"></p>
 
     <main class="timeline-wrap" id="timelineContainer">
         <!-- Cards injected by JS -->
@@ -323,6 +347,140 @@
         function catLabel(cat) {
             return { seni:'Seni', adat:'Adat & Ritual', arsitektur:'Arsitektur', kuliner:'Kuliner', sastra:'Sastra & Aksara', musik:'Musik & Tari' }[cat] || cat;
         }
+
+        // ════════════════════════════════════════════════════════
+        // MODE "DI MANA KAMU" — jelajah budaya dunia berdasarkan
+        // lokasi pengguna (geolocation + haversine), termasuk
+        // "imagine you are in ..." untuk kota yang belum terdeteksi.
+        // ════════════════════════════════════════════════════════
+        const PLACES = [
+            // ── Nusantara ──
+            { name:"Yogyakarta, Indonesia", lat:-7.7956, lon:110.3695, flag:"🇮🇩", vibe:"Kota pelajar di kaki Merapi — gudeg nangka duh! Malam hari gamelan masih bertalu dari pendopo keraton.", cultures:["Candi Prambanan","Batik Keraton","Gamelan","Wayang Orang"] },
+            { name:"Magelang (Borobudur), Jawa Tengah", lat:-7.6079, lon:110.2038, flag:"🇮🇩", vibe:"Kabut pagi menyelimuti kubah candi Buddha terbesar di dunia; sunrise di Borobudur adalah meditasi massal.", cultures:["Candi Borobudur","Sastra Kawi"] },
+            { name:"Maros-Pangkep (Leang Tedongnge), Sulawesi Selatan", lat:-4.9910, lon:119.6750, flag:"🇮🇩", vibe:"Karst purba dengan lukisan babi rusa 51.000 tahun — seni figuratif tertua yang diketahui manusia.", cultures:["Lukisan Gua Leang Tedongnge"] },
+            { name:"Sangkulirang, Kalimantan Timur", lat:0.9000, lon:117.5000, flag:"🇮🇩", vibe:"Galeri cap tangan prasejarah terbesar di Asia Tenggara tersembunyi di tebing karst tepi Sungai Mangkalati.", cultures:["Cap Tangan Sangkulirang"] },
+            { name:"Cianjur (Gunung Padang), Jawa Barat", lat:-6.9869, lon:107.1386, flag:"🇮🇩", vibe:"Teras berundak megalitik di punggungan bukit — situs yang memicu debat arkeologi paling seru di Indonesia.", cultures:["Megalit Gunung Padang"] },
+            { name:"Ubud, Bali", lat:-8.5069, lon:115.2625, flag:"🇮🇩", vibe:"Subak mengairi sawah terasering sejak abad ke-9; setiap pagi suara gamelan dan canang sari mengalir dari pura ke jalan.", cultures:["Tradisi Tanam Padi Sawah (Subak)","Gamelan","Batik & Lukis"] },
+            { name:"Toraja, Tana Toraja, Sulawesi Selatan", lat:-3.0500, lon:119.8000, flag:"🇮🇩", vibe:"Rumah Tongkonan menghadap utara, upacara Rambu Solo' meriah berhari-hari — kematian dirayakan sebagai kepulangan.", cultures:["Adat Toraja & Tongkonan"] },
+            { name:"Rantepao Utara — Nene' Sampe Bollian", lat:-3.0000, lon:119.8500, flag:"🇮🇩", vibe:"Di gua Teppe Tallu Batu, seorang nenek berusia 200+ tahun menurut tradisi lokal duduk dalam guci — keluarga menyuapinya teh dan rokok tiap hari, dan ia disebut-sebut sebagai manusia tertua di dunia.", cultures:["Tradisi Leluhur Toraja"] },
+            { name:"Kubu Raya / Pontianak, Kalimantan Barat", lat:-0.0800, lon:109.4000, flag:"🇮🇩", vibe:"Kota tepat di garis khatulistiwa — tugu equator berdiri di dua belahan bumi sekaligus.", cultures:["Equator Monument"] },
+            { name:"Medan & Danau Toba, Sumatera Utara", lat:2.6790, lon:98.6180, flag:"🇮🇩", vibe:"Kaldera vulkanik raksasa tempat marga Batak menjaga silsilah Si Raja Batak dan hukum Dalihan Na Tolu.", cultures:["Si Raja Batak & Dalihan Na Tolu"] },
+            { name:"Palembang, Sumatera Selatan", lat:-2.9762, lon:104.7754, flag:"🇮🇩", vibe:"Kota Sriwijaya tua di tepi Musi — pempek selat pagi hari, aksara dan prasasti abad ke-7 masih jadi kebanggaan.", cultures:["Prasasti Sriwijaya","Kuliner Palembang"] },
+            { name:"Aceh (Samudera Pasai)", lat:5.0500, lon:97.1500, flag:"🇮🇩", vibe:"Nisan para sultan di pantai timur Aceh menandai kesultanan Islam pertama Nusantara, pusat rempah internasional abad ke-13.", cultures:["Kesultanan Samudera Pasai"] },
+            { name:"Kudus & Demak, Jawa Tengah", lat:-6.7273, lon:110.8347, flag:"🇮🇩", vibe:"Menara masjid berbentuk candi Hindu-Jawa — akulturasi paling damai dalam arsitektur Nusantara.", cultures:["Kesultanan Demak & Menara Kudus"] },
+            { name:"Surakarta (Solo), Jawa Tengah", lat:-7.5757, lon:110.8327, flag:"🇮🇩", vibe:"Dua keraton, pasar batik lawas, dan rumah-rumah tempat Kartini pernah bermimpi lewat surat-suratnya.", cultures:["Batik Keraton","R.A. Kartini & Surat-suratnya"] },
+            { name:"Maluku (Ternate & Tidore)", lat:0.8000, lon:127.4500, flag:"🇮🇩", vibe:"Kepulauan Rempah yang gerakannya memanggil armada Eropa ke Nusantara — cengkeh dan pala pernah lebih mahal dari emas.", cultures:["Kesultanan Ternate & Tidore"] },
+            { name:"Pulau Rote, Nusa Tenggara Timur", lat:-10.8500, lon:123.0000, flag:"🇮🇩", vibe:"Sasando berdawai ganda dimainkan di bawah langit sabana — konon sudah ratusan tahun menjaga cerita leluhur.", cultures:["Sasando & Tradisi Rote"] },
+            { name:"Ponorogo, Jawa Timur", lat:-7.9400, lon:111.4600, flag:"🇮🇩", vibe:"Setiap malam bulan purnama, Singo Barongan dan penari dadak merak menari kerasukan keberanian — Reog sedang diperjuangkan ke UNESCO.", cultures:["Reog Ponorogo"] },
+            { name:"Jakarta (Batavia)", lat:-6.2088, lon:106.8456, flag:"🇮🇩", vibe:"Di sebuah gedung Jalan Pegangsaan Timur 56, pada 17 Agustus 1945 Soekarno membacakan proklamasi; 28 Oktober 1928 Sumpah Pemuda diikrarkan di sini.", cultures:["Proklamasi 1945","Sumpah Pemuda & Indonesia Raya"] },
+            // ── Dunia ──
+            { name:"Meru, Kenya", lat:0.3500, lon:37.5000, flag:"🇰🇪", vibe:"Dataran tinggi Meru di kaki Mount Kenya — rumah suku Meru (sebutan 'mzee' untuk tetua, kopi & teh kebun mengalir tiap hari). Pagi berkabut, tanah merah, dan jerat cerita leluhur tentang gunung 'Kirinyaga' tempat tuhan bersemayam.", cultures:["Adat Meru & Nguriyaki","Teh Dataran Tinggi Kenya","Mount Kenya / Kirinyaga"] },
+            { name:"Nairobi, Kenya", lat:-1.2864, lon:36.8172, flag:"🇰🇪", vibe:"Satu-satunya ibu kota dunia dengan taman nasional di dalam batas kota — jerapat bisa lewat saat macet jam kerja.", cultures:["Urban National Park","Swahili Coast Culture"] },
+            { name:"Lamu, Kenya", lat:-2.2717, lon:80.9119, flag:"🇰🇪", vibe:"Kota Swahili tertua dan terluas di Afrika Timur — perahu dhow meluncur tanpa mesin, ukiran pintu kayu bercerita silsilah.", cultures:["Budaya Pesisir Swahili"] },
+            { name:"Zanzibar, Tanzania", lat:-6.1659, lon:39.2026, flag:"🇹🇿", vibe:"Stone Town penuh aroma cengkeh, kayu manis, dan kelopak mawar — 'Spice Island' yang memikat pelaut Nusantara lewat jalur rempah yang sama.", cultures:["Jalur Rempah Samudra Hindia","Taarab Music"] },
+            { name:"Kairo & Giza, Mesir", lat:29.9792, lon:31.1342, flag:"🇪🇬", vibe:"Piramida Giza satu-satunya Keajaiban Dunia Kuno yang masih berdiri; azan dari menara masjid bercampur hiruk-pikuk Khan el-Khalili.", cultures:["Ancient Egypt","Islamic Cairo"] },
+            { name:"Roma, Italia", lat:41.9028, lon:12.4964, flag:"🇮🇹", vibe:"Koloseum dan Forum Romana — lapisan-lapisan 2.800 tahun sejarah bisa digali hanya dengan turun tangga metro.", cultures:["Roman Empire","Renaissance Art"] },
+            { name:"Agra, India", lat:27.1767, lon:78.0081, flag:"🇮🇳", vibe:"Taj Mahal berubah warna sepanjang hari — putih fajar, keemasan senja; marmer inkrustasi batu semi-mulia karya 20.000 pekerja.", cultures:["Mughal Architecture","Silk Road Crafts"] },
+            { name:"Beijing, Tiongkok", lat:39.9042, lon:116.4074, flag:"🇨🇳", vibe:"Kota Terlarang menyimpan 9.000 ruangan; hutong di luarnya masih menjual sarapan baozi uap di gang-gang abu bata.", cultures:["Forbidden City","Chinese Calligraphy"] },
+            { name:"Kyoto, Jepang", lat:35.0116, lon:135.7681, flag:"🇯🇵", vibe:"1.600 kuil dan ribuan torii merah di Fushimi Inari — geiko masih menyeberang jalan setapak batu saat hujan salju turun.", cultures:["Shinto & Buddhist Heritage","Tea Ceremony"] },
+            { name:"Petén, Guatemala", lat:17.0000, lon:-89.6000, flag:"🇬🇹", vibe:"Tikal menjulang di atas samudra hutan hujan — 65.000 struktur Maya kini terdeteksi laser LiDAR di bawah kanopi.", cultures:["Maya Civilization"] },
+            { name:"Cusco, Peru", lat:-13.5320, lon:-71.9675, flag:"🇵🇪", vibe:"Bekas ibu kota Inca di ketinggian 3.400 mdpl; dinding Sacsayhuamán disusun batu 100 ton tanpa semen, presisi silet.", cultures:["Inca Heritage","Quechua Textiles"] },
+            { name:"Machu Picchu, Peru", lat:-13.1631, lon:-72.5450, flag:"🇵🇪", vibe:"Kota awan di punggung Andes — baru dikenal dunia luar pada 1911, dibangun abad ke-15 lalu ditinggalkan tanpa penjelasan.", cultures:["Inca Citadel"] },
+            { name:"Islandia (Reykjavík)", lat:64.1466, lon:-21.9426, flag:"🇮🇸", vibe:"Tanah es dan api: geyser, glacier, dan Saga Viking tertulis sejak abad ke-13 masih dibaca di sekolah hari ini.", cultures:["Norse Sagas","Thingvellir Parliament"] },
+            { name:"New York, Amerika Serikat", lat:40.7128, lon:-74.0060, flag:"🇺🇸", vibe:"Patung Liberty menyambut imigran sejak 1886; jazz Harlem, hip-hop Bronx — satu kota yang mendunia lewat musiknya.", cultures:["Ellis Island Immigration","Jazz & Hip-Hop"] },
+            { name:"London, Inggris", lat:51.5074, lon:-0.1278, flag:"🇬🇧", vibe:"Dari Stonehenge 5.000 tahun hingga Big Ben — Shakespeare, Revolusi Industri, dan the Tube tua berwarna merah hati.", cultures:["British Monarchy","Industrial Revolution"] },
+            { name:"Sydney, Australia", lat:-33.8688, lon:151.2093, flag:"🇦🇺", vibe:"Opera House bersirip keramik dan Aboriginal rock art berusia 40.000 tahun di Blue Mountains — dua lapisan sejarah yang bertemu di teluk yang sama.", cultures:["Aboriginal Heritage","Harbour Icon"] },
+            { name:"Istanbul, Turki", lat:39.9334, lon:32.8597, flag:"🇹🇷", vibe:"Satu kota di dua benua: Hagia Sophia 1.500 tahun, pasar rempah Egyptian Bazaar, dan uap çay di gelas kecil sepanjang Bosporus.", cultures:["Byzantine & Ottoman Heritage","Spice Bazaar"] },
+            { name:"Paris, Prancis", lat:48.8566, lon:2.3522, flag:"🇫🇷", vibe:"Lukisan gua prasejarah ada di lorong bawah tanah Musée, tapi jiwa Paris ada di café kiri bank — dari Verlaine hingga film baru.", cultures:["Renaissance to Impressionism","Café Culture"] }
+        ];
+
+        let userLoc = null; // { lat, lon, label }
+        const locateBtn = document.getElementById('locateBtn');
+        const locateNote = document.getElementById('locateNote');
+
+        function haversineKm(lat1, lon1, lat2, lon2) {
+            const R = 6371, toRad = d => d * Math.PI / 180;
+            const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+            return 2 * R * Math.asin(Math.sqrt(a));
+        }
+
+        function nearestPlaces(lat, lon, n = 6) {
+            return PLACES.map(p => ({ ...p, distKm: haversineKm(lat, lon, p.lat, p.lon) }))
+                         .sort((a, b) => a.distKm - b.distKm)
+                         .slice(0, n);
+        }
+
+        function fmtDist(km) {
+            if (km < 1) return '< 1 km';
+            if (km < 100) return km.toFixed(0) + ' km';
+            return Math.round(km).toLocaleString('id-ID') + ' km';
+        }
+
+        function renderWorld() {
+            const block = document.createElement('div');
+            block.className = 'era-block';
+            block.id = 'jelajah-dunia';
+            const isLocalMode = !!userLoc;
+            const items = isLocalMode ? nearestPlaces(userLoc.lat, userLoc.lon) : PLACES.slice(0, 8);
+            block.innerHTML = `
+                <h2 class="era-heading reveal world-heading">${isLocalMode ? '📍 Budaya Terdekat Dari Kamu' : '🌍 Budaya Melampaui Batas Negeri'}</h2>
+                <div class="era-years">${isLocalMode
+                    ? `Posisi kamu: ${userLoc.label} · jarak dihitung lintas bola dunia`
+                    : 'Karena warisan budaya bukan milik satu negara — coba mode “Di Mana Kamu” untuk melihat yang terdekat darimu'}</div>
+                <div class="place-grid"></div>`;
+            const grid = block.querySelector('.place-grid');
+            items.forEach((p, i) => {
+                const card = document.createElement('article');
+                card.className = 'card place-card reveal' + (isLocalMode && i === 0 ? ' is-you' : '');
+                const links = (p.cultures || []).map(t => `<span class="tag">${t}</span>`).join(' ');
+                card.innerHTML = `
+                    <div class="card-icon">${p.flag}</div>
+                    ${isLocalMode && i === 0 ? '<span class="place-badge">✨ Paling dekat denganmu</span>' : ''}
+                    <h3>${p.name}</h3>
+                    <div class="place-coords">${Math.abs(p.lat).toFixed(2)}°${p.lat >= 0 ? 'N' : 'S'}, ${Math.abs(p.lon).toFixed(2)}°${p.lon >= 0 ? 'E' : 'W'}${isLocalMode ? ' · 🧭 ± ' + fmtDist(p.distKm) : ''}</div>
+                    <p>${p.vibe}</p>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">${links}</div>`;
+                grid.appendChild(card);
+            });
+            container.insertBefore(block, noResults);
+        }
+
+        function activateWorldMode(label) {
+            document.querySelectorAll('#timelineContainer .era-block').forEach(el => {
+                if (el.id !== 'jelajah-dunia') el.remove();
+            });
+            renderWorld();
+            observeReveals();
+            document.getElementById('jelajah-dunia').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        locateBtn.addEventListener('click', () => {
+            if (!('geolocation' in navigator)) {
+                locateNote.textContent = 'Perangkat ini tidak mendukung geolocation — kami tampilkan peta budaya dunia secara acak.';
+                activateWorldMode();
+                return;
+            }
+            locateBtn.classList.add('busy');
+            locateBtn.textContent = '⏳ Mencari posisi kamu…';
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    userLoc = { lat: pos.coords.latitude, lon: pos.coords.longitude,
+                                label: `${pos.coords.latitude.toFixed(2)}°, ${pos.coords.longitude.toFixed(2)}°` };
+                    locateNote.textContent = '✅ Posisi terkunci. Ini budaya-budaya terdekat darimu — jaraknya garis lurus lintas benua, ya.';
+                    locateBtn.textContent = '🔄 Segarkan posisi';
+                    locateBtn.classList.remove('busy');
+                    activateWorldMode();
+                },
+                err => {
+                    locateNote.textContent = '😌 Izin lokasi ditolak/tidak tersedia — silakan pakai mode imajinasi: ketik saja “imagine you are in …”, misalnya Meru, Kenya.';
+                    locateBtn.textContent = '📡 Coba lagi';
+                    locateBtn.classList.remove('busy');
+                    activateWorldMode();
+                },
+                { timeout: 8000, maximumAge: 300000 }
+            );
+        });
 
         document.getElementById('searchInput').addEventListener('input', e => { query = e.target.value; render(); });
         document.querySelectorAll('.filter-chip').forEach(chip => {
