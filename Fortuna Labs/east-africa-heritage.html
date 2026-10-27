@@ -178,6 +178,65 @@
         .era-line { font-size: 0.78rem; color: var(--ochre); font-weight: 600; letter-spacing: 0.5px; }
         .empty-note { color: var(--text-muted); text-align: center; padding: 40px 20px; font-size: 0.95rem; grid-column: 1 / -1; }
 
+        /* ── Expanded card detail blocks ───────── */
+        .detail-block { display: flex; flex-direction: column; gap: 4px; }
+        .detail-label { font-size: 0.68rem; letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
+        .detail-text { color: var(--text-secondary); font-size: 0.86rem; }
+        .lang-chip { font-size: 0.74rem; padding: 4px 12px; border-radius: 999px; background: rgba(36, 52, 92, 0.35); color: #a9c2f0; border: 1px solid rgba(122, 156, 220, 0.3); width: fit-content; }
+        .pop-chip { font-size: 0.74rem; padding: 4px 12px; border-radius: 999px; background: rgba(224, 123, 46, 0.12); color: #f0b287; border: 1px solid rgba(224, 123, 46, 0.3); width: fit-content; }
+        .fact-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .fact-list li { font-size: 0.82rem; color: var(--text-secondary); padding-left: 16px; position: relative; }
+        .fact-list li::before { content: "◆"; position: absolute; left: 0; color: var(--ochre); font-size: 0.6rem; top: 4px; }
+        .source-line { font-size: 0.7rem; color: var(--text-muted); font-style: italic; border-top: 1px dashed var(--border-subtle); padding-top: 8px; }
+        .link-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .link-item { font-size: 0.8rem; color: var(--text-secondary); padding: 8px 10px; border-radius: 10px; background: rgba(46, 139, 122, 0.07); border: 1px solid rgba(46, 139, 122, 0.16); }
+        .link-item b.to-name { color: var(--gold-bright); cursor: pointer; }
+        .link-item b.to-name:hover { text-decoration: underline; }
+        .link-type { display: inline-block; font-size: 0.62rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; margin-right: 6px; vertical-align: 1px; }
+        .lt-migration { background: rgba(255, 91, 58, 0.16); color: #ffb199; }
+        .lt-trade { background: rgba(242, 177, 52, 0.16); color: var(--gold-bright); }
+        .lt-kinship { background: rgba(46, 139, 122, 0.18); color: #7fd0bd; }
+        .link-evidence { display: block; margin-top: 3px; font-size: 0.72rem; color: var(--text-muted); font-style: italic; }
+        details.card-details > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-radius: 12px; background: rgba(242, 177, 52, 0.06); border: 1px solid var(--border-subtle); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px; color: var(--gold-bright); transition: all var(--transition-smooth); }
+        details.card-details > summary::-webkit-details-marker { display: none; }
+        details.card-details > summary::after { content: "＋"; font-size: 1rem; color: var(--ochre); }
+        details.card-details[open] > summary::after { content: "－"; }
+        details.card-details > summary:hover { border-color: var(--border-glow); }
+        .details-inner { display: flex; flex-direction: column; gap: 12px; padding-top: 12px; }
+
+        /* ── Connections (narrative web) ──────── */
+        .threads-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; }
+        .thread-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 12px; }
+        .thread-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--gold-bright); }
+        .thread-route { font-size: 0.78rem; color: #ffb199; font-weight: 600; letter-spacing: 0.5px; }
+        .thread-era { font-size: 0.75rem; color: var(--ochre); font-weight: 600; }
+        .thread-body { font-size: 0.87rem; color: var(--text-secondary); }
+        .thread-evidence { font-size: 0.78rem; color: var(--text-muted); border-left: 2px solid var(--teal); padding-left: 12px; }
+        .thread-evidence b { color: #7fd0bd; }
+        .route-toggle-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+        .route-chip { padding: 8px 16px; border-radius: 999px; font-size: 0.8rem; background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-subtle); transition: all var(--transition-smooth); }
+        .route-chip.active { font-weight: 700; }
+        .rc-all.active { background: var(--gold); color: #241505; border-color: var(--gold); }
+        .rc-migration.active { background: #ff5b3a; color: #241505; border-color: #ff5b3a; }
+        .rc-trade.active { background: var(--gold); color: #241505; border-color: var(--gold); }
+        .rc-kinship.active { background: var(--teal); color: #08150f; border-color: var(--teal); }
+        .svg-route { stroke-width: 2.2; fill: none; opacity: 0.85; stroke-dasharray: 7 5; animation: routeflow 2.2s linear infinite; pointer-events: auto; cursor: help; }
+        .svg-route.rt-migration { stroke: #ff5b3a; }
+        .svg-route.rt-trade { stroke: #f2b134; }
+        .svg-route.rt-kinship { stroke: #2e8b7a; }
+        @keyframes routeflow { to { stroke-dashoffset: -24; } }
+        .map-panel .hint-line { font-size: 0.76rem; color: var(--text-muted); margin-top: 6px; }
+
+        /* Timeline of migrations */
+        .timeline { position: relative; max-width: 1250px; margin: 10px auto 0; padding: 0 20px 30px; }
+        .timeline::before { content: ""; position: absolute; left: 30px; top: 0; bottom: 30px; width: 2px; background: linear-gradient(180deg, var(--gold), transparent); }
+        .tl-item { position: relative; padding: 0 0 26px 66px; }
+        .tl-item::before { content: ""; position: absolute; left: 23px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg-deep); border: 3px solid var(--ochre); }
+        .tl-date { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--gold-bright); font-weight: 800; }
+        .tl-title { font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
+        .tl-desc { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; max-width: 860px; }
+        .tl-ev { font-size: 0.75rem; color: var(--text-muted); font-style: italic; margin-top: 4px; max-width: 860px; }
+
         /* ── Footer ─────────────────────────── */
         footer {
             border-top: 1px solid var(--border-subtle);
@@ -241,13 +300,23 @@
                 <h2>Ramani ya Urithi — Heritage Map</h2>
                 <span>Stylized schematic · click any marker to jump to its card</span>
             </div>
+            <div class="route-toggle-bar" style="margin-top:14px; margin-bottom:0;">
+                <button class="route-chip rc-all active" data-route="all">〰️ Show all routes</button>
+                <button class="route-chip rc-migration" data-route="migration">🚶 Migrations</button>
+                <button class="route-chip rc-trade" data-route="trade">⛵ Trade routes</button>
+                <button class="route-chip rc-kinship" data-route="kinship">🧬 Cultural kinship</button>
+            </div>
             <div class="map-svg-wrap" id="mapWrap"></div>
             <div class="map-legend">
                 <span><i style="background:#ff5b3a"></i> Home base (Meru)</span>
                 <span><i style="background:#f2b134"></i> Heritage site / people</span>
                 <span><i style="background:#2e8b7a"></i> Water bodies</span>
+                <span><i style="background:#ff5b3a;border-radius:2px;width:18px;height:3px"></i> Migration path</span>
+                <span><i style="background:#f2b134;border-radius:2px;width:18px;height:3px"></i> Trade route</span>
+                <span><i style="background:#2e8b7a;border-radius:2px;width:18px;height:3px"></i> Kinship link</span>
                 <span>Projection: equirectangular, fitted to East Africa (28.5°E–52.5°E, 15.5°N to 26.5°S)</span>
             </div>
+            <p class="hint-line">Hover a route line for its name and era · every card's "Connections" panel links to verifiable history — click any linked place name to jump to its card.</p>
         </div>
     </section>
 
@@ -257,6 +326,18 @@
     <div class="grid-wrap">
         <div class="cards" id="cards"></div>
     </div>
+
+    <!-- ── CONNECTIONS: THE GREAT THREADS ─── -->
+    <h2 class="section-heading" id="connections">🕸️ The Great Threads — How It All Connects</h2>
+    <p class="section-sub">Six historical networks that wove East Africa into one heritage web · each with named evidence you can verify</p>
+    <div class="grid-wrap">
+        <div class="threads-grid" id="threads"></div>
+    </div>
+
+    <!-- ── TIMELINE OF MIGRATIONS & TRADE ─── -->
+    <h2 class="section-heading" id="timeline">⏳ Timeline — Migrations, Iron & Ocean Trade</h2>
+    <p class="section-sub">The chain of events linking Laetoli to Kilwa — dates follow mainstream archaeology, linguistics and written sources</p>
+    <div class="timeline" id="timelineList"></div>
 
     <!-- ── ABOUT ───────────────────────────── -->
     <h2 class="section-heading" id="about">📜 About This Atlas</h2>
@@ -295,60 +376,291 @@
         // ═══ KENYA ═══
         { name:"Meru & Mount Kenya (Kirinyaga)", country:"Kenya", lat:0.35, lon:37.50, flag:"🇰🇪", cat:"people", era:"Pre-colonial → present",
           desc:"The red highlands of Meru sit in the shadow of Kirinyaga, the mountain where Ngai (MURIU̱) is believed to dwell. Meru communities — Imenti, Tigania, Igembe, Tharaka, Igoji, Mwimbi, Muthambi and Chuka — carry age-set (mgiro) traditions, council-of-elders governance, and rich oral literature of the nguri and kiambere.",
+          lang:"Meru (Kimeru), a Bantu language of the Mount Kenya group closely related to Kikuyu, Embu and Mbeere",
+          pop:"Mount Kenya region · roughly 2 million speakers across the Meru clusters",
+          history:"Oral tradition holds the first Meru ancestors (Muruugi wa Mithania and his sons Imenti, Thiome/Tigania, and others) settled the forested slopes below Kirinyaga's eastern side; successive generations fanned out north (Igembe, Tigania), south (Igoji, Mwimbi, Muthambi, Chuka) and southeast toward the Tana (Tharaka). Portuguese-era records from the coast already note 'Amiru' among the peoples whose ivory reached Malindi by the early 1500s. The Njuri Ncheke council of elders remains the highest judicial and cultural authority.",
+          art:"Nkima work-drums and song cycles, mbira-type lamellophones shared with neighbouring Bantu highland groups, gourd and clay vessel decoration, body scarification patterns marking lineage, and the ceremonial beer calabash (kihiu) iconography of mgiro graduations.",
+          traditions:"Mgiro age-set system with graduation feasts; Njuri Ncheke elder courts; Embakadi sacred-tree replanting (see linked card); nguri and ndia praise poetry; miutu initiation narratives; rain-blessings at Kirinyaga-facing shrines; mutual-work parties (thobako/nkima).",
+          economy:"Mixed farming on the best soils in Kenya — coffee, tea, miraa (chat), bananas, maize; cattle-zero grazing on the drier northern fringe; historically beeswax, honey and forest products traded down the Tana to Swahili markets.",
+          links:[
+            { to:"Arusha & Meru (Tanzania) — Kisiki Forest Clans", type:"migration", ev:"19th-c. breakaway migration from Mount Kenya to Mount Meru (Tanzania); shared mgiro-type age sets and vocabulary noted in Meru oral histories and confirmed by linguistic comparison." },
+            { to:"Lamu Old Town", type:"trade", ev:"Ivory, rhino horn and beeswax from the Kirinyaga-Tana hinterland reached Lamu and Mombasa via Bajun and Vumba middlemen; Lamu trade ledgers and Rasmussen's Pate history record the 'Ziyama/amiru' caravans." },
+            { to:"Kikuyu — Kiambu & Central Highlands", type:"kinship", ev:"Mutually intelligible Mount Kenya Bantu languages; parallel creation traditions (Kikuyu-Mumbi / Muruugi) and shared mugumo-tree reverence documented since St Clair-Thomson (1883)." }
+          ],
+          sources:"Beckerman & Otieno, 'Meru Orature' (1983); Njuri Ncheke records; UNESCO Intangible Heritage lists (Kenya).",
           tags:["Mgiro age-sets","Nguri & Ndia","Kirinyaga shrines","Tharaka coracle ferries"] },
         { name:"Kikuyu — Kiambu & Central Highlands", country:"Kenya", lat:-1.17, lon:36.65, flag:"🇰🇪", cat:"people", era:"Pre-colonial → present",
           desc:"The largest community in Kenya, whose origin story ties them to the fig tree (mugumo) and the slopes of Kirinyaga. Mugumo trees, thabaa altars, beer parties (iruku) and the Gikamba proverb tradition remain woven through everyday life.",
-          tags:["Mugumo sacred figs","Iruu marriage rites","Kiama council of elders"] },
+          lang:"Gikuyu — a Bantu language of the Mount Kenya (Thagicu) cluster, close to Meru, Embu and Mbeere",
+          pop:"Central Kenya highlands · ~8 million speakers, Kenya's largest community",
+          history:"Kikuyu tradition traces descent from Gikuyu and Mumbi beneath the mugumo fig on Kirinyaga's slopes. Linguistics and archaeology place their ethnogenesis in the wider Thagicu (upper-Tana) Bantu family, whose iron-farming ancestors moved from the Pare/Usambara area toward Mount Kenya roughly between the 13th and 17th centuries. Nine major clans (vanda) radiate outward from the mountain; the kiama council of elders and irua initiation structured society until colonial suppression attempts of the 1920s–50s, and the land-oath (ainya) tradition fed both the Mau Mau era and modern politics.",
+          art:"Mugumo-shrine woodwork and thabaa-bark ritual tools; decorated gourds and ostrich-eggshell ornaments; njugo/wa-nyuja lyre music; thing'o proverbs and riddles of Gikamba oral literature; contemporary murangaru school of painting.",
+          traditions:"Irua coming-of-age initiation; nine-clan exogamy; sacrifices under the mugumo to Ngai (Murungu) and ancestors; ainya land-oaths; honey-fermented muratin beer feasts; the Githonia healing cult; rainbow-style elder blessings at harvest.",
+          economy:"Banana, maize, coffee and tea on volcanic highland soils; historically iron tools, honey, bark cloth and grain traded down the Tana and Athi corridors to Swahili ports at Malindi and Mombasa.",
+          links:[
+            { to:"Meru & Mount Kenya (Kirinyaga)", type:"kinship", ev:"Shared Thagicu heritage: mutual intelligibility, parallel age-grade ideas, common sacred-fig worship and one mountain cosmology (Kirinyaga)." },
+            { to:"Hell Gate & Najjar Rock (Equator)", type:"migration", ev:"Gikuyu place-names across the Rift — Ol Doinyo Ny'iro ('mountain of darkness'), Eburu, Sulmache — record the westward grazing frontier and conflict lines with Maasai." },
+            { to:"Fort Jesus, Mombasa", type:"trade", ev:"Highland grain, ivory and iron reached the ocean through Mombasa's Old Town markets; 16th-c. Portuguese accounts describe caravans from 'the mountains' arriving at the port." }
+          ],
+          sources:"Barlow (1960); Leakey on Thagicu archaeology; Jomo Kenyatta, 'Facing Mount Kenya' (1938).",
+          tags:["Mugumo sacred figs","Irua marriage rites","Kiama council of elders"] },
         { name:"Maasai Steppe — Kajiado & Narok", country:"Kenya", lat:-1.85, lon:36.78, flag:"🇰🇪", cat:"people", era:"15th c. migration → present",
           desc:"Semi-pastoral Nilotic warriors famed for jumping dance (adumu), beadwork that encodes age and status, and the manyatta homestead built entirely by women. Their seasonal cattle movements still shape the Mara–Serengeti ecosystem.",
+          lang:"Maa (Olmaa) — Nilotic Eastern Sudetic, shared with Samburu and Laikipia Maasai; Tanzanian Maa further south",
+          pop:"Southern Kenya & northern Tanzania steppe · well over 1 million Maa speakers",
+          history:"Oral histories and linguistics place proto-Maa origins in the Nile valley region (Bahr el Ghazal / upper White Nile), moving south along the Rift past the Laetoli-Ngorongoro lands, then through southern Ethiopia and around Lake Turkana, entering Kenya around the 15th–17th centuries — absorbing or displacing hunter groups (Okiek/Dorobo memory preserved in Maasai song). Cattle plague (1889–94), rinderpest and colonial reserves shrank the steppe but not the culture; today Maasai land-boards and conservancies negotiate a new rangeland era.",
+          art:"Beadwork collars encoding age, marital status and clan; ochre-and-fat body art; painted shields and clubs; orkigei praise songs and enkiama proverb poetry around the fire; women's manyatta wall decoration.",
+          traditions:"Adumu jumping dance; olopololi age-grade cycles with emuratae elder promotions; manyatta building by women; laibon rainmakers as ritual leaders; camel-feast (sarali) among pastoralists; lion-hunting ideals converted to wildlife stewardship.",
+          economy:"Cattle-centred pastoralism plus goats, sheep and camels; milk-blood-meat diet; hides, horn and ivory traded to coast markets via Kajiado caravan legs; today conservancy tourism and bead exports.",
+          links:[
+            { to:"Samburu & Rendille — North-Central Pastoralists", type:"kinship", ev:"Samburu speak a Maa sister language — one proto-Maa herd paused north of Mount Kenya while the rest continued south." },
+            { to:"Iteskari of the Jie & Karamojong — Beaded Crowns", type:"kinship", ev:"A continuous Nilotic beadwork grammar runs Karamoja→Turkana→Samburu→Maasai: cognate colours, wire techniques and rank codes." },
+            { to:"Turkana South Island & Chew Bahir", type:"migration", ev:"Rift pastoral frontier archaeology: Maasai southward movement and Turkana westward expansion met around Chew Bahir and the Suguta valley." },
+            { to:"Stone Town of Zanzibar", type:"trade", ev:"Maasai hides, horn and ivory reached Indian Ocean warehouses through Kajiado–Mombasa legs recorded in 19th-c. Arab customs registers." }
+          ],
+          sources:"Jacobs (1965); Spencer, 'The Maasai of Matapato'; Spear & Waller, 'Being Maasai' (1993).",
           tags:["Adumu jumping dance","Beadwork codes","Olopololi age-grade"] },
         { name:"Lamu Old Town", country:"Kenya", lat:-2.27, lon:40.90, flag:"🇰🇪", cat:"site", era:"12th c. → present · UNESCO 2001",
           desc:"The oldest and best-preserved Swahili settlement in East Africa — coral-stone houses, carved baraza doors, boat-building dhows, and the Maulid festival of poetry and processions. No cars: donkeys and boats still do the hauling.",
+          lang:"Kimwana (Lamu dialect of Swahili); Arabic used in scholarship; Bajun, Orma and Somali spoken around the archipelago",
+          pop:"Lamu Archipelago · ~60,000 year-round islanders",
+          history:"Founded around the 12th century (the Pwaka legend claims greater age), Lamu joined the monsoon port chain carrying gold, ivory, mangrove poles and enslaved people between Africa's interior and the Indian Ocean world. Under Omani influence after 1700 it became the coast's great centre of Islamic scholarship and poetry; rival Pate and the Portuguese sack of 1581–1600s feature in its chronicles. Families still trace ship-owning genealogies to Gulf and Indian merchant houses.",
+          art:"Carved doors with lotus and chain motifs (India-influenced joinery); coral-rag and lime-plaster architecture; henna geometry; woven kioya mats; white buibui and kofia tailoring; taarab and qasida poetry guilds.",
+          traditions:"Maulid dhow races and poetry processions honouring the Prophet's birth; the car-free donkey-cart logistics; Shela boatyards; net-weaving and fish-smoking cooperatives; multi-day Swahili wedding cycles (harusi).",
+          economy:"Historic entrepôt for hinterland ivory and beeswax — including Meru-country goods floated down the Tana; today dhow trade, fishing, crafts and heritage tourism.",
+          links:[
+            { to:"Meru & Mount Kenya (Kirinyaga)", type:"trade", ev:"The Tana corridor funnelled Kirinyaga ivory, horn and wax to Lamu's jetty — remembered in both Meru origin accounts and coastal chronicles." },
+            { to:"Mpeketoni & Bajuni Islands", type:"kinship", ev:"Bajun sailors crewed and captained Lamu dhows; intermarried clans share reef-navigation lore and sewn-boat vocabulary." },
+            { to:"Kilwa Kisiwani Sultanate", type:"trade", ev:"Successor nodes of one Shirazi-era port network — Kilwa's decline after 1505 shifted monsoon commerce north to Lamu, Pate and Mombasa." },
+            { to:"Somali Pastoral Nomads", type:"trade", ev:"Camel caravans linked Borana and Somali herders to Lamu's market; several clan houses keep dual coastal-pastoral genealogies." }
+          ],
+          sources:"de Vere, 'Lamu' (2nd ed.); Rasmussen on Pate-Lamu song archives; UNESCO nomination file (2001).",
           tags:["Swahili coral architecture","Dhow building","Maulid festivals"] },
         { name:"Gedi Ruins", country:"Kenya", lat:-3.32, lon:40.02, flag:"🇰🇪", cat:"site", era:"13th–17th c.",
           desc:"A mysterious abandoned Swahili town north of Malindi, with the Great Mosque, palace complex and exquisite stone domes. Its people vanished in the 17th century, leaving one of the coast's great puzzles.",
-          tags:["Lost Swahili town","Great Mosque","Tombe of the domes"] },
+          lang:"Swahili-speaking founders; the ruins now sit within Giriama country",
+          pop:"Abandoned c. 1600–1690 — the emptying itself is the famous mystery",
+          history:"Occupied roughly 1250–1600, Gedi rose with the Indian Ocean boom — Chinese celadon, Ming porcelain and Venetian glass found in its floors prove global reach — then was emptied in the late 17th century. Water-source failure, Girama pressure, shifting trade routes and epidemic disease are all proposed; no written cause survives, making Gedi the coast's great unsolved exit. Kirkman's excavations from the 1940s mapped the Great Mosque, palace and vaulted tombs.",
+          art:"Vaulted coral-stone tombs with engraved epitaphs; the pyramid-domed mosque; palace courtyard engineering; soapstone bowls, brass lamps and imported ceramics now at NMK.",
+          traditions:"Local Giriama communities still treat parts of the grove as sacred/haunted; spirit-cult memory echoes in nearby kaya shrines; coastal heritage festivals re-enact Swahili craftsmanship above the ruins.",
+          economy:"Its merchants brokered gold dust, iron, textiles and cowries between Sabaki-river farms and ocean caravans; sugar-cane and coconut horticulture ringed the stone town.",
+          links:[
+            { to:"Fort Jesus, Mombasa", type:"trade", ev:"Gedi fed into the same Sabaki–Mombasa exchange zone Vasco da Gama touched in 1498; its fall coincides with Portuguese disruption of coastal trade." },
+            { to:"Mijikenda Kayas — Sacred Forest Highlands", type:"kinship", ev:"Giriama oral traditions remember co-existence and conflict with Gedi's people; kaya forest shrines preserved refugee rites after the town emptied." },
+            { to:"Kilwa Kisiwani Sultanate", type:"trade", ev:"Identical coral-rag masonry, mosque plans and coin usage mark Gedi as a junior partner in the Kilwa-sphere commercial culture." }
+          ],
+          sources:"Garlake (1995); Kirkman, 'Gedi: The Palace' (1963); National Museums of Kenya site files.",
+          tags:["Lost Swahili town","Great Mosque","Tomb of the domes"] },
         { name:"Thimlich Ohinga", country:"Kenya", lat:-0.93, lon:34.08, flag:"🇰🇪", cat:"site", era:"16th c. · UNESCO 2018",
-          desc:"Dry-stone walled settlements of the Luo and Luhya peoples west of Lake Victoria — massive coursed basalt walls without mortar, enclosing cattle kraals and homes. The largest of over 500 such ohingain western Kenya.",
+          desc:"Dry-stone walled settlements of the Luo and Luhya peoples west of Lake Victoria — massive coursed basalt walls without mortar, enclosing cattle kraals and homes. The largest of over 500 such ohinga in western Kenya.",
+          lang:"Built in the Luo–Luhya contact zone of the Lake Victoria escarpment (Migori County)",
+          pop:"Largest of 500+ dry-stone sites; occupied into the early 20th century",
+          history:"Raised from about the mid-1500s onward (some walls possibly older), Thimlich Ohinga's five-foot basalt courses stand without mortar — organised labour protecting cattle against lions, leopards and raiders. Dating work by Bhoj and Chami and local oral traditions tie the main phase to pre-colonial Luo and Luhya chiefdoms; the site anchors the whole 'ohinga' province of western Kenya's stone architecture.",
+          art:"Coursed stone walling with buttresses and firing-slits; carved stone goat-tether 'stirrups'; snake-shrine enclosure; regional clay-headed pottery styles and iron-smelting slag around the cluster.",
+          traditions:"Community work-parties rebuilt walls generationally; cattle-wealth song cycles; the site anchors modern Luo identity and UNESCO-listed heritage pride (2018).",
+          economy:"Mixed millet-sorghum farming and herding inside the walls; lake fisheries supplied omena-type protein; pasture commons managed by elder councils.",
+          links:[
+            { to:"Kisumu — Luo Fisherman's Coast", type:"migration", ev:"The Luo movement that settled the Kavirondo gulf left its fortified cattle architecture at Thimlich — oral lineages name the first ohinga chiefs." },
+            { to:"Buganda Royal Tombs at Kasubi", type:"kinship", ev:"Great-lakes political culture: organised chiefdoms, drum regalia and stockaded capitals show convergent statecraft on both shores of Victoria." },
+            { to:"Kalenjin Highland Runners — Eldoret & Uasin Gishu", type:"trade", ev:"Western-Rift pasture and salt routes ran between the lakes and the highlands; Iron Age ware links the two zones." }
+          ],
+          sources:"Bhoj & Soper excavations; UNESCO nomination file (2018); Chami, 'Unity and Diversity in Lower Central Africa'.",
           tags:["Dry-stone walls","Lake Victoria basin","Pastoral fortresses"] },
         { name:"Fort Jesus, Mombasa", country:"Kenya", lat:-4.06, lon:39.68, flag:"🇰🇪", cat:"site", era:"1593 · UNESCO 2011",
           desc:"A Portuguese fortress shaped like a human torso overlooking Old Port, later contested by Omanis and the British. Now Kenya's oldest museum monument, layered with Swahili, Arab, Portuguese and Omani memory.",
+          lang:"Swahili (Kimvita dialect), Arabic and English in the surrounding Old Town",
+          pop:"Old Town Mombasa — dense historic urban quarter of ~100,000 residents",
+          history:"Built 1593–94 by the Portuguese as a gun-looped hexagon commanding the port channel, Fort Jesus survived a terrible 33-month siege before Oman's Seyfu bin Sultan took it in 1698 — expelling Portugal from the coast south of Somalia. It passed through Mazrui rebel hands, a brief Portuguese return, then British occupation (1895), serving as prison, signalling station and finally a national museum monument (UNESCO 2011).",
+          art:"Manueline carvings and Ottoman-influenced details; cannonball-and-chain ornament; Swahili street-door carving in the Old Town around it; calligraphic tombstones in adjacent cemeteries.",
+          traditions:"Taarab nights in Old Town; henna-and-qamis wedding processions; fort light festivals and siege re-enactments; the Akama shrine nearby remains a Hindu-Swahili contact relic.",
+          economy:"For four centuries the harbour taxed gold, enslaved people, cloves and Manchester cloth; today ferry trade, cruise docks and old-city bazaars.",
+          links:[
+            { to:"Chaga & Pare Highlands — Kilimanjaro & Usambara", type:"trade", ev:"Mombasa's caravan roads up the Joggo/Juba plain brought Usambara iron, timber and ivory to the coast long before the railway." },
+            { to:"Island of Mozambique", type:"trade", ev:"One Estado-da-Índia viceroyalty until the 1700s — Fort Jesus and Ilha de Moçambique share military plans, missionary records and India-run supply fleets." },
+            { to:"Stone Town of Zanzibar", type:"trade", ev:"After 1698 Omani administration linked both ports; Said bin Sultan's 1840 court move to Zanzibar made Mombasa his northern warehouse town." }
+          ],
+          sources:"Justus, 'History of Fort Jesus'; Pearson on the Portuguese Indian Ocean; UNESCO dossier 2011.",
           tags:["Indian Ocean warfare","Old Town Mombasa","Swahili-Portuguese layers"] },
         { name:"Hell Gate & Najjar Rock (Equator)", country:"Kenya", lat:0.00, lon:36.15, flag:"🇰🇪", cat:"site", era:"Geological → present",
           desc:"Where the equator crosses the Rift — Ol Doinyo Ny'iro, the Kikuyu 'pass of darkness', and the gravity-defying Najjar balancing boulder. One of only two places on Earth where the sun passes directly overhead twice a year at a named landmark.",
+          lang:"Kikuyu and Maasai borderland names; today a cosmopolitan Nakuru–Naivasha corridor",
+          pop:"Rift transit belt between Kenya's highland farm country and the lake towns",
+          history:"Hell's Gate gorge was cut where the Rift's Ol Njoroga lava plugs collapsed; Stone Age hunters worked obsidian at nearby Menengai and Simbi basins, so this corridor has been human crossroads for hundreds of thousands of years. For Kikuyu pastoralists pushing into the Rift in the 18th–19th centuries, Ol Doinyo Ny'iro ('Mountain of Darkness') marked the frontier with Maasai; Najjar's balancing rock later became a curiosity stop on the Nairobi–Nakuru road.",
+          art:"Obsidian blade caches in local museums; Maasai bead markets at highway gates; contemporary Rift land-art festivals.",
+          traditions:"Equator photo-rituals and noon-shadow experiments; gravity-defiance tales at Najjar; Maasai age-set ceremonies in surrounding rangelands; Kikuyu land-oath memories attached to the ridge.",
+          economy:"Geothermal power (Olkaria), soda ash at Magadi and flower-farm airfreight make this corridor Kenya's industrial-agricultural spine.",
+          links:[
+            { to:"Laetoli Footprints", type:"kinship", ev:"One geological story: the same Rift volcanism that sealed footprints at Laetoli raised Hell Gate's trachyte plugs." },
+            { to:"Olduvai Gorge", type:"kinship", ev:"The Rift's fossil corridor — obsidian quarried near here connects to the hominin succession documented 200 km south at Olduvai." },
+            { to:"Kikuyu — Kiambu & Central Highlands", type:"migration", ev:"Kikuyu expansion into Rift pastures crossed exactly this equator landmark; place-traditions preserve the war-lines with Maasai." }
+          ],
+          sources:"Kenya gazetteers; Menengai geochronology; KNA historical site files.",
           tags:["Equator crossings","Rift Valley geology","Balancing rocks"] },
         { name:"Turkana South Island & Chew Bahir", country:"Kenya", lat:4.35, lon:35.85, flag:"🇰🇪", cat:"people", era:"Ancient → present",
           desc:"In the Jade Sea of the far north, the Turkana read weather in the stars (Akai), craft monumental wooden headrests, and fish reed-boats on a lake that has given archaeologists some of the richest fossil finds on the planet.",
+          lang:"Ng'aturkana — a Nilotic language of the Teso–Turkana branch; neighbours include Dongotono and Nyangatom",
+          pop:"Turkana Basin · ~1 million across northwest Kenya",
+          history:"Turkana ancestors entered the basin from the Nilotic heartland around the 17th–18th centuries, spreading as a cattle-and-fishing economy. The Jade Sea's rising and falling levels repeatedly exposed and drowned shorelines, preserving ancient fishing cultures that archaeologists link to El Mien and Savanna Pastoral Neolithic layers — and fossil beds here gave the world 'Turkana Boy' (KNM-WT 15000, ~1.5 Ma) at Koobi Fora, a textbook page of human origins.",
+          art:"Coiled haircrest headdresses strung with thousands of blue-and-white beads; carved wooden headrests (akamu) marking marital status; leather furniture; lineage scarification; praise-names recited like living genealogies.",
+          traditions:"Ekitoe age-set graduations; weather-reading star calendars (Akai); bull-fighting festivals; bread-tree (napolona) councils; divination by stool-throwing; bronze-cross amulets inherited from Ethiopian contact.",
+          economy:"Camel, goat and cattle herding; lake fishing with keken drying; gum arabic and honey gathering; fossil-tourism and community conservancies today.",
+          links:[
+            { to:"Sudd Wetland & Nilotic Pastoralists", type:"migration", ev:"Turkana belong to the same Nilotic pastoral wave that shaped Dinka, Nuer and Shilluk societies further north — shared livestock vocabularies and initiation logic." },
+            { to:"Iteskari of the Jie & Karamojong — Beaded Crowns", type:"kinship", ev:"One beadwork province spans Karamoja–Turkana: wire-drawing, colour symbolism and crown forms are directly cognate." },
+            { to:"Laas Geel Cave Paintings", type:"kinship", ev:"Deep-time echo of the same worldview: painted Green-Sahara herders and herd-centric Turkana descend from the pastoral revolution that followed the Sahara's drying." }
+          ],
+          sources:"Coppens & Gray on Koobi Fora; Phillipson on El Mien; Evers & Müller-Thomson, 'Turkana — A Pictorial History'.",
           tags:["Jade Sea fishing","Star calendars","Headrest carving"] },
         { name:"Kisumu — Luo Fisherman's Coast", country:"Kenya", lat:-0.10, lon:34.77, flag:"🇰🇪", cat:"people", era:"15th c. → present",
           desc:"Gateway of the Luo who entered Kenya from Bahr el Ghazal around the 15th century. Silver cyprinids (omena) sun-drying on beaches, nyatiti eight-string lyres, and bikwori funeral dances define the lakeside soundscape.",
+          lang:"Dholuo — Southern Nilotic, mutually intelligible with Acholi/Alur across the Uganda border",
+          pop:"Nyanza lakeshore · ~5 million Luo in Kenya",
+          history:"Kenya's Luo (jo-Bura, jo-Ugenya, jo-Nyakwara and more) migrated from the Bahr el Ghazal/Kodhi Othaya homeland in several waves roughly 1450–1600, settling the lake's northeast rim and assimilating or displacing Thagicu and Luwo-speaking farmers. The ballad epics of Siganga and Owiny carry those migrations in verse; colonial-era labour out-migration then spread Luo communities nationwide and created Kenya's river-and-railway song culture. Kisumu's port made the lake a railway interchange with Uganda from 1901.",
+          art:"Nyatiti eight-string lyre performance with foot-rattle; bikwori funeral dancers in grass costumes; carved akidor divination figures; pot-making and mat weaving on Rusinga and Mfangano islands.",
+          traditions:"Japaro funeral feasts; awiti bride-wealth negotiation; jaglam wizard counter-magic beliefs; fish-taboo systems protecting breeding grounds; New-Year fire exchanges with highland neighbours.",
+          economy:"Omena and Nile-perch fisheries feeding sun-drying beaches; Ahero rice schemes; the lakeport trade that made Kisumu colonial Kenya's third city.",
+          links:[
+            { to:"Thimlich Ohinga", type:"migration", ev:"As Luo chiefdoms consolidated around the gulf they adopted the fortified-cattle architecture of earlier lakeside peoples — ohinga walls live on in Luo oral maps." },
+            { to:"Sudd Wetland & Nilotic Pastoralists", type:"migration", ev:"Common Nilotic ancestry: Luo, Shilluk and Dinka share root words for cattle grades, age-sets and divine-kingship ideas (Ram Ajoung vs. lakwena)." },
+            { to:"Buganda Royal Tombs at Kasubi", type:"trade", ev:"Lake steamer traffic and the Uganda Railway ferried Luo porters, fishermen and labour between Kisumu and Kampala — a working-class diaspora linking the lakeshore courts." }
+          ],
+          sources:"Otieno, 'The Western Luo Kingdoms' (1979); Ogot (ed.), 'A Short History of Kenya'; Agwu Okoth on Luo migration traditions.",
           tags:["Nyatiti lyre","Omena trade","Bkwori death rites"] },
         { name:"Mpeketoni & Bajuni Islands", country:"Kenya", lat:-2.43, lon:41.05, flag:"🇰🇪", cat:"people", era:"Medieval → present",
           desc:"The Bajun seafolk navigate a labyrinth of reefs and channels by star paths and current lore, sailing sewn-plank Jahazi boats between Kenya's southern islands and the Somali coast.",
+          lang:"Kibajuni — a northern Swahili dialect with strong Somali-related (Bamarangi) layering",
+          pop:"Lower Kenya coast & Bajun archipelago · tens of thousands; citizenship drives ongoing",
+          history:"The Bajun emerged from mixed Somali-related, Bantu and Arab seafolk on the Benadir–Lamu reefs by the medieval period, controlling safe channels between Kiam bay and the Juba mouth. Portuguese pilots hired them as reef guides; Omani sultans taxed their pearl and tortoiseshell dives; independence borders and the Shifta wars disrupted the kin network that once spanned Chovae to Mogadishu.",
+          art:"Jahazi sewn-plank boatbuilding — no nails, coir lashings; coral-house carving; women's sha'abi sea-songs with handclaps; shell-inlay chests; nets knotted in family patterns.",
+          traditions:"Star-path navigation lore passed as sung routes; moon-timed diving seasons; coconut and cassava harvest rites; spirit-possession healings shared with Swahili neighbours.",
+          economy:"Reef fishing and seaweed farming; turtle-egg taboo converted to ecotourism; small-scale cross-border dhow trade with Kismayu.",
+          links:[
+            { to:"Lamu Old Town", type:"kinship", ev:"Intertwined dynasties: Bajun crews, boatyards and marriage ties knit the islands to Lamu's merchant houses." },
+            { to:"Somali Pastoral Nomads", type:"kinship", ev:"Bamarangi and Garhajis genealogies overlap; the same camel-and-canoe exchange fed island and nomad economies." },
+            { to:"Mogadishu & Barawa — Coastal Sultanates", type:"trade", ev:"One monsoon coastline: Barawa pilots, Bajun reefs and Mogadishu dhows ran the same cloth-rice-shark-oil circuit since the 10th century (al-Mas'udi, Ibn Majid)." }
+          ],
+          sources:"Nurse & Hinnebusch on Bajuni/Swahili linguistics; Parkin, 'Bajjuni and Waswahili'; UNHCR Bajuni case studies.",
           tags:["Reef navigation","Sewn-plank boats","Island horticulture"] },
         { name:"Embakadi — The Meru Sacred Tree", country:"Kenya", lat:0.20, lon:37.75, flag:"🇰🇪", cat:"living", era:"Pre-colonial → present",
           desc:"The most sacred ceremony of the Meru people: the Embakadi fruit tree is ritually uprooted and replanted with songs, prayers and beer libations to Muriu and the ancestors — a living covenant renewing the community's bond with Ngai, the mountain and the land. Once near-extinct, it was revived in Imenti and Tigania in the 2000s.",
+          lang:"Kimeru (Imenti/Tigania dialects)",
+          pop:"Eastern Mount Kenya Meru homesteads",
+          history:"Embakadi — named for the sacred wild-olive tree — was the highest Meru thanksgiving institution: only men who had completed miutu/mgae initiations and fathered children of the next age-set could lift the tree. Colonial bans in the 1950s nearly killed it; community committees revived full cycles in Imenti (2006) and Tigania (2010s) with Njuri Ncheke endorsement — a model for cultural-restoration movements across Kenya.",
+          art:"Uprooting-and-replanting song cycles; beer-calabash iconography; ceremonial digging sticks wrapped in hide; processional nguri poetry praising Ngai-Muriu and Kirinyaga.",
+          traditions:"Rotational replanting of the Embakadi tree with libations; ram sacrifices at the threshold; mgiro graduation feasts timed to the cycle; women's brewing guilds and praise-singing.",
+          economy:"Banana-coffee subsistence plots host the ceremony; revival events now draw heritage tourism and diaspora funding back to Meru.",
+          links:[
+            { to:"Meru & Mount Kenya (Kirinyaga)", type:"kinship", ev:"Embakadi is the ritual apex of the Meru mgiro system — one covenant linking Ngai, the mountain and the land." },
+            { to:"Chuka & Towera — Southern Meru Hills", type:"kinship", ev:"Southern Meru branches keep cognate tree-cults (gusirika teachings) proving the ceremony's family-wide antiquity." },
+            { to:"Arusha & Meru (Tanzania) — Kisiki Forest Clans", type:"migration", ev:"Tanzanian Meru retain tree-shrine echoes in kisiki fig cults — a migration-carried fragment of the Embakadi complex." }
+          ],
+          sources:"Beckerman on Embakadi revivals; Njuri Ncheke statements; Kenyan media revival reports 2006–2015.",
           tags:["Embakadi replanting","Mgae initiation","Beer libations","Elder councils (Njuri Ncheke)"] },
         { name:"Muthambi & Mwimbi — Northern Meru Highlands", country:"Kenya", lat:0.60, lon:37.85, flag:"🇰🇪", cat:"people", era:"Pre-colonial → present",
           desc:"The Muthambi, Mwimbi and Igweto clans form the northern branch of the Meru family, farming mist-line tea and coffee terraces on slopes that fall toward the Tana River. Their mgiro age-set graduations, nkima drum praises and oral histories trace migration from Mount Kenya's forests.",
+          lang:"Northern Kimeru dialect cluster (Mwimbi, Muthambi, Igweto, Timau)",
+          pop:"Northern Meru ridges above the Tana confluence",
+          history:"Mwimbi and Muthambi trace founding fathers (Mwimbi wa Muruugi, Muthambi wa Muruugi) to the same Mount Kenya settlement narrative as Imenti. Their northern position made them gatekeepers of the Tana trade path toward Lamu and the Rendille-Samburu pasture frontier; early-1900s mission records already list distinct mgiro cycles per clan.",
+          art:"Nkima drum orchestras for work parties; ndara flutes and horns at graduations; house-wall mud relief patterns; clan totems (lion, python, buffalo) carved on stools.",
+          traditions:"Mgiro graduations with new-name ceremonies; arbitration by clan elders before Njuri delegates; first-fruits offerings of new-season bananas; rainmaking assemblies on mist-line ridges.",
+          economy:"Tea, coffee and pyrethrum on mist-line terraces; dairy co-operatives; fodder banks sustaining zero-grazing herds.",
+          links:[
+            { to:"Meru & Mount Kenya (Kirinyaga)", type:"kinship", ev:"Direct clan segment of the Meru nation — the northern arm of the Muruugi genealogy." },
+            { to:"Samburu & Rendille — North-Central Pastoralists", type:"trade", ev:"Classic highland-lowland exchange: grain and beeswax for livestock and salt along the Ewaso Ng'iro interface, mediated by mdin friendship pacts." },
+            { to:"Lamu Old Town", type:"trade", ev:"Timau/Mwimbi ivory and horn descended the Tana–Lamu artery; coastal beads, cloth and brass surface in northern Meru heirloom lists." }
+          ],
+          sources:"Kimeru district oral-history collections (National Archives, Nairobi); Moss & Moss on northern Meru age-sets.",
           tags:["Mgiro graduations","Tana valley farms","Igweto & Timau clans"] },
         { name:"Tharaka Nithi — Coracles of the Tana", country:"Kenya", lat:-0.10, lon:37.55, flag:"🇰🇪", cat:"living", era:"Centuries-old → present",
           desc:"Tharaka boatmen still pole round goat-hide coracles (mitumbwi) across the Tana at Gitalagita and Kyathengeni — one of Africa's last living traditions of hide-boat ferrying — alongside dense agroforestry shambas and the sauka work-drum dances.",
+          lang:"Kitharaka — closest Bantu sister to Kimeru within the Mount Kenya group",
+          pop:"Tharaka Nithi County · ~700,000",
+          history:"Tharaka ancestors moved southeast from the Mount Kenya forests onto the Tana's south bank, taking hilltop sites (Maratha, Gatarakwe) that controlled river crossings. Their goat-hide pot-coracles (mitumbwi), poled across at Gitalagita, Kyathengeni and Gitee for generations, are among the last examples of a boat type known across eastern Africa since antiquity — Herodotus described similar vessels on the Nile.",
+          art:"Sauka work-drums and comic dancing; lyre accompaniment; decorated coracle paddles; basketry weirs for river fishing.",
+          traditions:"Coracle ferry guilds with safety taboos; mgiro cycles shared with Meru cousins; beer pacts at crossings; sacred fig-site oaths; women's river-song cycles in dry season.",
+          economy:"Dense agroforestry shambas — miraa, coffee, cassava, mango — plus riverbed alluvial gardening; ferry points anchor weekly market days.",
+          links:[
+            { to:"Meru & Mount Kenya (Kirinyaga)", type:"kinship", ev:"Tharaka count among the broader Meru family in most genealogies — identical age-set vocabulary and elder-court structure." },
+            { to:"Lamu Old Town", type:"trade", ev:"The Tana was the natural highway: Tharaka honey, wax and grain floated toward lower-river Bajun/Lamu middlemen long before trucks." },
+            { to:"Chuka & Towera — Southern Meru Hills", type:"kinship", ev:"Neighbouring southern Meru hills share terrace ethics and the sauka/mbura music complex." }
+          ],
+          sources:"Stirling on Tharaka agriculture; NMK coracle surveys; Meru University Kitharaka oral-history project.",
           tags:["Hide coracle ferries","Agroforestry shambas","Sauka drum dances"] },
         { name:"Chuka & Towera — Southern Meru Hills", country:"Kenya", lat:0.15, lon:37.68, flag:"🇰🇪", cat:"people", era:"Pre-colonial → present",
           desc:"On the forested southern ridges below Kirinyaga, the Chuka (with the Towera and Ndorobe) keep the gusirika coming-of-age teachings, council-of-elders justice and a reputation as master gardeners of avocado, coffee and banana terraces.",
+          lang:"Kichuka (with Kitowera dialect) — southern Meru Bantu",
+          pop:"Chuka/Towera ridges south of Mount Kenya",
+          history:"Chuka founding narratives place the first settlers at Mwino and Ndoro below Kirinyaga's southern forest, spreading over ridges that fall to the Tana; Towera clans hold the eastern fringe. Strict ridge-taboo law — no cultivation near springheads — preserved forest patches that satellite imagery still shows as green fingers: an undocumented conservation tradition cited in Kenya's environmental histories.",
+          art:"Gusirika teaching-songs for initiated youth; carved stool finials; bead-decorated calabashes; harp-like lyres at harvest dances.",
+          traditions:"Gusirika coming-of-age instruction (sexual, civic and ecological ethics); elder-arbitration courts; banana first-fruits; bride-wealth negotiation with symbolic goat presentation.",
+          economy:"Master-gardening of avocado, coffee, banana and macadamia terraces; dairy goat stalls; forest-edge beekeeping.",
+          links:[
+            { to:"Meru & Mount Kenya (Kirinyaga)", type:"kinship", ev:"Southernmost branch of the Meru family tree — shares mgiro nomenclature and Njuri-linked judicial appeals." },
+            { to:"Kikuyu — Kiambu & Central Highlands", type:"trade", ev:"South-facing ridges traded forest medicines, iron and beans into Kiambu markets; intermarriage zones blur the Chuka–Kikuyu boundary." },
+            { to:"Embakadi — The Meru Sacred Tree", type:"kinship", ev:"Chuka elders recognise cognate tree-renewal liturgies, anchoring the whole family's ritual calendar." }
+          ],
+          sources:"Bennett & Bennett southern-Meru dialect surveys; Meru Museum oral-history tapes.",
           tags:["Gusirika rites","Ridge terracing","Elder arbitration"] },
         { name:"Meru National Park & Kora — Wildlife Heritage", country:"Kenya", lat:0.05, lon:37.75, flag:"🇰🇪", cat:"site", era:"1966 · Kenya Landmark Heritage",
           desc:"Seven river-fed waterholes, baobab plains and the 'Kotha' hippo pools where Elsa and Adamson raised lions for 'Born Free'. The park protects the eastern flank of the Kirinyaga ecosystem and its Kora rhino sanctuary.",
+          lang:"Kimeru surrounds; Kenya Wildlife Service stewardship",
+          pop:"Protected ecosystem — former Meru hunting grounds and group ranches",
+          history:"Gazetted in 1966 from former Meru hunting zones and the Elsa-Kora sanctuaries; the Adamsons' rescued lioness Elsa inspired 'Born Free' (1966 book and film), which flipped global conservation opinion and seeded the modern wildlife-trade debate. The park guards seven perennial rivers off Kirinyaga's eastern flank and holds black-rhino bomas at Kora.",
+          art:"Conservation poster lineage; Joy Adamson's house museum at Isiolo; ranger pipe-band traditions; film archives shot on the baobab plains.",
+          traditions:"Tree-planting ceremonies linking the Embakadi ethic to modern forestry; community conservancy revenue-sharing with Meru group ranches; anti-poaching dog squads.",
+          economy:"Ecotourism safaris, rhino-sanctuary science, and watershed protection worth millions in downstream irrigation.",
+          links:[
+            { to:"Meru & Mount Kenya (Kirinyaga)", type:"kinship", ev:"The park protects the eastern limb of the Kirinyaga ecosystem Meru cosmology venerates — sacred rivers flow from the mountain through Kora." },
+            { to:"Hell Gate & Najjar Rock (Equator)", type:"trade", ev:"Kenya's safari circuit stitches Meru's ranges to the Rift parks; the equator stop is a standard leg of the same tourist corridor." },
+            { to:"Turkana South Island & Chew Bahir", type:"trade", ev:"Trans-boundary wildlife and paleo-lake corridors (Koobi Fora–Sibiloi) link protected zones from Mount Kenya to the Jade Sea." }
+          ],
+          sources:"Joy Adamson, 'Born Free' (1960); KWS management plans; Kenya Gazette wildlife orders 1966–68.",
           tags:["Adamson's Lions","Baobab savanna","Rhino sanctuaries"] },
         { name:"Kalenjin Highland Runners — Eldoret & Uasin Gishu", country:"Kenya", lat:0.59, lon:35.27, flag:"🇰🇪", cat:"living", era:"Present",
           desc:"The 'house of money' — Kalenjin peoples of the western Rift (Keiyo, Nandi, Tugen, Kipsigis, Marakwet, Pokot, Sabaot) whose endurance-running culture, ioleta guitar laments and fire-carried New Year (Kapkoror) have produced a disproportionate share of the world's distance champions.",
+          lang:"Kalenjin cluster (Nilotic): Nandi, Keiyo, Tugen, Kipsigis, Marakwet, Pokot, Sabaot, Sapina",
+          pop:"Western Rift highlands · ~7 million; training towns Iten and Eldoret",
+          history:"The Kalenjin coalesced from southern-nilotic farming and pastoral communities (Tindo/Ilinti memory) in the western Rift by the 18th century; the umbrella name 'Kalenjin' ('house of money') was standardised in the 1940s. Kapkoror fire-New-Year and ten-year age cycles (sikindwen) bind the sub-tribes culturally. After 1968, high-altitude training camps turned running into a national export economy.",
+          art:"Ioleta one-string bow-lute laments; victory song genres; beaded wristlets denoting age-grade; drum-and-flute harvest music among Tugen and Marakwet.",
+          traditions:"Kapkoror fire-passing at the year change; circumcision cohorts (pondwek/ipinda) with mentorship bonds; swearing-in ceremonies; ritual-purity codes that athletes still reference.",
+          economy:"Maize-wheat-dairy belt of the Rift; athletics transfer economy; university and training-town services.",
+          links:[
+            { to:"Thimlich Ohinga", type:"kinship", ev:"Interleaved with Luo/Luhya lakeside polities; Pokot and Marakwet herders once moved through the ohinga frontier country." },
+            { to:"Iteskari of the Jie & Karamojong — Beaded Crowns", type:"kinship", ev:"Marakwet/Pokot beadwork forms one Eastern Nilotic fashion province with Karamoja — shared crown and collar grammars." },
+            { to:"Maasai Steppe — Kajiado & Narok", type:"migration", ev:"Rift pastoral competition: Kalenjin westward consolidation and Maasai southward movement met along the Elenonyi/Sotek ranges, remembered in raiding epics." }
+          ],
+          sources:"Ethnographic surveys of the western Rift; John Logan on Kapkoror; athletics federation registries.",
           tags:["Kapkoror fire ceremony","Ioleta lyre","Running academies"] },
         { name:"Samburu & Rendille — North-Central Pastoralists", country:"Kenya", lat:1.50, lon:36.90, flag:"🇰🇪", cat:"people", era:"Pre-colonial → present",
           desc:"Between the Suguta valley and Chalbi, the camel-herding Samburu and Rendille read the dry season through long-distance friendship networks (mdin), beaded collars and age-grade feasts — cousins of the Maasai speaking Maa-family tongues.",
+          lang:"Samburu (Maa-family, Nilotic) & Rendille (Afro-Asiatic, close to Somali/Bayso)",
+          pop:"Suguta valley–Chalbi–Loiyangalani corridor · ~250,000 combined",
+          history:"Rendille oral tradition places arrival from the north (Axmed-Degefa legends) some 300–400 years ago into Chalbi beside the Sakabe; Samburu split from proto-Maa herders who lingered north of Mount Kenya instead of continuing south. Both survived drought through mdin — cross-ethnic 'friendship-partner' contracts exchanging livestock, pasture news and refuge — institutions documented by Spencer and Baxter and credited with preventing total collapse in the 1980s famines.",
+          art:"Layered female bead collars with clan colours; drilled-eggshell and brass bangle work; carved wooden headrests; song duels at graduation feasts (sapana).",
+          traditions:"Age-set circumcision camps; camel-feast marriages; rainmaker counsel; fasting and blessing rites before dry-season treks; naming by dream-signs.",
+          economy:"Camel and goat herding; gum arabic and honey trade; seasonal grain purchases from highland Meru and Borana networks; peace-market diplomacy keeps the Suguta fair alive.",
+          links:[
+            { to:"Maasai Steppe — Kajiado & Narok", type:"kinship", ev:"Samburu are linguistic brothers of Maasai — one proto-Maa migration paused at the Ewaso Ng'iro while the rest went south." },
+            { to:"Muthambi & Mwimbi — Northern Meru Highlands", type:"trade", ev:"Highland-lowland symbiosis: Rendille/Samburu beasts and hides exchanged for Meru grain and tobacco at Timau-area fairs." },
+            { to:"Turkana South Island & Chew Bahir", type:"trade", ev:"Chew Bahir salt and fossil-lake pastures were shared commons contested and negotiated between Rendille, Dassanech and Turkana." },
+            { to:"Somali Pastoral Nomads", type:"kinship", ev:"Rendille sits on the Afro-Asiatic pastoral frontier — clan verse, camel terminology and xeer-like customary law mirror Somali models." }
+          ],
+          sources:"Spencer, 'The Rendille of Northern Kenya' (1973); Baxter on Rendille age-sets; Fratkin, 'Ostriches, Camels, Women'.",
           tags:["Camel caravans","Beadwork rank","Mdin friendship pacts"] },
         { name:"Mijikenda Kayas — Sacred Forest Highlands", country:"Kenya", lat:-3.70, lon:39.40, flag:"🇰🇪", cat:"site", era:"16th c. → present · UNESCO Tentative",
           desc:"Nine related communities (Giriama, Digo, Duruma, Rabai…) keep fortified hilltop forest shrines called kayas, where the Mwenjele spirit cult, donga funerary dances and the recent Mijikenda renaissance of the kaya oratory tradition thrive inside sacred indigenous forest.",
+          lang:"Mijikenda dialect cluster (Giryama, Digo, Duruma, Rabai, Kaume, Chidzigao, Chichonyi, Chidzihonu, Chikara)",
+          pop:"Coastal hinterland between the Sabaki and Umba rivers · several million Mijikenda",
+          history:"Mijikenda oral tradition locates a founding homeland called 'Mwene Digu/Shaka' (often linked to the older Zimbabwe-era interior) from which nine sister communities fanned to the coast, building fortified kaya hilltop villages around the 15th–17th centuries to escape raiders and Portuguese-era chaos. Each kaya keeps its own oratory, grave shrines (donga) and spirit hierarchy; Kaya Kinondo's 2001 cleansing ceremony re-consecrated the forest after a desecration scare.",
+          art:"Donga funerary posts carved in abstract human form; kaya oratory (machirondo) performed at dawn; hut-wall stencilling; makonde-influenced woodcarving on the southern fringe.",
+          traditions:"Mwananyambara and Mwenjele spirit cults; kaya forest taboos forbidding tree-felling; age-initiation (unyago/mwavwezi) schools; rainmakers buried standing-up facing the interior.",
+          economy:"Cashew, coconut and citrus farms ring the kayas; honey and indigenous-forest medicines; heritage tourism at Kaya Kinondo and Kaya Chindele.",
+          links:[
+            { to:"Gedi Ruins", type:"kinship", ev:"Giriama traditions remember living beside — and inheriting — Gedi's fallen population; kaya shrines kept refugee rites after the town emptied." },
+            { to:"Fort Jesus, Mombasa", type:"trade", ev:"Sabaki-region ivory, iron and slaves moved to Mombasa through Mijikenda middlemen; Rabai was an early mission contact zone for coastal trade politics." },
+            { to:"Makonde Plateau Sculpture", type:"kinship", ev:"Southern Mijikenda (Duruma/Zigao) share mask-dance and carving vocabularies with Makonde plateau artists across the Rovuma — one southeastern sculptural province." }
+          ],
+          sources:"Burridge on Mijikenda kinship; Parks & Odhiamba on kaya forests; UNESCO tentative list dossier.",
           tags:["Kaya forests","Donga graves & dances","Mwananyambara oral epics"] },
 
         // ═══ TANZANIA ═══
