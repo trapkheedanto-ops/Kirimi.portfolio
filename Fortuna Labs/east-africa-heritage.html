@@ -59,7 +59,8 @@
             backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--border-subtle);
         }
-        .brand { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.3rem; color: var(--gold-bright); letter-spacing: 0.5px; }
+        .brand { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.3rem; color: var(--gold-bright); letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
+        .brand-mark { flex-shrink: 0; filter: drop-shadow(0 2px 6px rgba(201,162,75,.35)); }
         .brand small { display: block; font-family: 'Inter'; font-weight: 400; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
         .nav-links { display: flex; gap: 22px; font-size: 0.88rem; color: var(--text-secondary); }
         .nav-links a:hover { color: var(--gold-bright); }
@@ -254,7 +255,13 @@
 <body>
 
     <nav class="navbar">
-        <a class="brand" href="index.html">🗺️ East Africa Heritage<small>Mandoto na Urithi · Living Atlas</small></a>
+        <a class="brand" href="index.html"><svg class="brand-mark" width="30" height="30" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+                <circle cx="20" cy="20" r="19" fill="#3d1f12" stroke="#c9a24b" stroke-width="1.6"/>
+                <path d="M7 30 L15.5 12.5 L20 21.5 L24.5 10.5 L33 30 Z" fill="#c9a24b"/>
+                <path d="M15.5 12.5 L18 17.8 L13.6 17.8 Z M24.5 10.5 L27.2 16.2 L22.4 16.2 Z" fill="#fdf6e3"/>
+                <rect x="7" y="30" width="26" height="3.6" rx="1.2" fill="#8a3b1e"/>
+                <path d="M11.5 27.5 Q20 32.5 28.5 27.5" fill="none" stroke="#f4d58d" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>East Africa Heritage<small>Mandoto na Urithi · Living Atlas</small></a>
         <div class="nav-links">
             <a href="#map">Map</a>
             <a href="#peoples">Peoples & Places</a>
@@ -369,6 +376,19 @@
 
     // ── HOME BASE: Meru, Kenya ─────────────────────────────
     var HOME = { name: "Meru, Kenya", lat: 0.35, lon: 37.5 };
+
+    // ── SECURITY HELPERS ───────────────────────────────────
+    // Every data value interpolated into HTML is escaped first (defence in depth
+    // against injection through the atlas dataset or future user-supplied content).
+    function esc(v) {
+        return String(v === null || v === undefined ? "" : v)
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+    // Only http(s) links from the dataset are allowed to render as anchors.
+    function safeHref(u) {
+        return /^(https?:\/\/)[^"'<>\\s]+$/i.test(u) ? u : null;
+    }
 
     // ── ATLAS DATA ─────────────────────────────────────────
     // cat: people | site | living
@@ -999,15 +1019,16 @@
             card.id = slug(s.name);
 
             var badges = '<span class="badge country">' + s.country + "</span>" +
-                         '<span class="badge dist">📍 ' + fmtKm(s._km) + " from " + origin.name.split(",")[0] + "</span>";
+                         '<span class="badge dist">📍 ' + fmtKm(s._km) + " from " + esc(origin.name.split(",")[0]) + "</span>";
 
             card.innerHTML =
-                '<div class="card-top"><h3>' + s.flag + " " + s.name + '</h3><span class="coords">' +
+                '<div class="card-top"><h3>' + esc(s.flag) + " " + esc(s.name) + '</h3><span class="coords">' +
                 s.lat.toFixed(2) + "°, " + s.lon.toFixed(2) + "°</span></div>" +
                 '<div class="badges">' + badges + "</div>" +
-                '<div class="era-line">' + s.era + "</div>" +
-                '<p class="desc">' + s.desc + "</p>" +
-                '<div class="tags">' + s.tags.map(function (t) { return '<span class="tag">' + t + "</span>"; }).join("") + "</div>";
+                '<div class="era-line">' + esc(s.era) + "</div>" +
+                '<p class="desc">' + esc(s.desc) + "</p>" +
+                '<div class="tags">' + s.tags.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") + "</div>" +
+                detailPanel(s);
 
             cardsEl.appendChild(card);
         });
@@ -1021,6 +1042,32 @@
             m.classList.toggle("dimmed", !visibleIds[m.getAttribute("data-id")]);
         });
         markHomeMarker();
+    }
+
+    // ── expandable scholarly panel per card ────────────────
+    function detailPanel(s) {
+        var rows = [];
+        if (s.lang)       rows.push('<div class="dp-row"><b>Languages:</b> ' + esc(s.lang) + "</div>");
+        if (s.pop)        rows.push('<div class="dp-row"><b>Population / location:</b> ' + esc(s.pop) + "</div>");
+        if (s.history)    rows.push('<div class="dp-row"><b>History:</b> ' + esc(s.history) + "</div>");
+        if (s.art)        rows.push('<div class="dp-row"><b>Art & material culture:</b> ' + esc(s.art) + "</div>");
+        if (s.traditions) rows.push('<div class="dp-row"><b>Living traditions:</b> ' + esc(s.traditions) + "</div>");
+        if (s.economy)    rows.push('<div class="dp-row"><b>Economy then & now:</b> ' + esc(s.economy) + "</div>");
+        if (s.links && s.links.length) {
+            rows.push('<div class="dp-row"><b>Connections:</b><ul class="dp-links">' + s.links.map(function (l) {
+                return "<li>[" + esc(l.type) + "] → " + esc(l.to) + ": " + esc(l.ev) + "</li>";
+            }).join("") + "</ul></div>");
+        }
+        if (s.sources)    rows.push('<div class="dp-row dp-src"><b>Sources:</b> ' + esc(s.sources) + "</div>");
+        if (s.refs && s.refs.length) {
+            var refs = s.refs.map(function (u) {
+                var h = safeHref(u);
+                return h ? '<a href="' + esc(h) + '" target="_blank" rel="noopener noreferrer nofollow">' + esc(h) + "</a>" : "";
+            }).filter(Boolean).join(" · ");
+            if (refs) rows.push('<div class="dp-row dp-src"><b>Further reading:</b> ' + refs + "</div>");
+        }
+        if (!rows.length) return "";
+        return '<details class="dp"><summary>📖 Full record — history, art, economy, connections & sources</summary><div class="dp-body">' + rows.join("") + "</div></details>";
     }
 
     // ── events ─────────────────────────────────────────────
