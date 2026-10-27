@@ -1,0 +1,10 @@
+const fs=require('fs');
+const html=fs.readFileSync('/workspace/Fortuna Labs/east-africa-heritage.html','utf8');
+const m=html.match(/var SITES = \[([\s\S]*?)\n    \];/);
+const arr=eval('['+m[1]+']');
+let noLinks=[],noSrc=[],noHist=[];
+arr.forEach(s=>{ if(!s.links||!s.links.length) noLinks.push(s.name); if(!s.sources) noSrc.push(s.name); if(!s.history) noHist.push(s.name); });
+console.log('total',arr.length);
+console.log('missing links:',noLinks.length, noLinks.slice(0,60).join(' | '));
+console.log('missing sources:',noSrc.length, noSrc.slice(0,60).join(' | '));
+console.log('missing history:',noHist.length);
